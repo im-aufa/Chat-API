@@ -12,7 +12,7 @@ jobs:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
       run: |
         echo "$DEPLOY_KEY" > id_rsa
-        chmod 600 deploy_key
+        chmod 600 id_rsa
         ls -l id_rsa  # Check file creation (debug)
         ssh -i id_rsa -o StrictHostKeyChecking=no -v aufaim@103.127.139.144 '
           echo "Connected to VPS" &&
