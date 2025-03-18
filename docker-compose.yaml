@@ -26,6 +26,8 @@ services:
 
   chat-api:
     build: ./chat-api
+    ports:
+      - "8000:8000"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.chat-api.rule=Host(`api.aufaim.com`)"

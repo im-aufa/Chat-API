@@ -1,0 +1,22 @@
+name: Deploy to VPS
+on:
+  push:
+    branches: [ master ]  # Adjust to main if needed
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Deploy to VPS
+      env:
+        DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+      run: |
+        echo "$DEPLOY_KEY" > deploy_key
+        chmod 600 deploy_key
+        ssh -i deploy_key -o StrictHostKeyChecking=no aufaim@103.127.139.144 '
+          cd /home/aufaim/aufaim-portfolio &&
+          git pull origin master &&
+          docker-compose down &&
+          docker-compose up -d --build &&
+          chmod 600 traefik/acme.json
+        '
