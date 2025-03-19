@@ -8,9 +8,12 @@ entryPoints:
           scheme: https
   websecure:
     address: ":443"
+  traefik:           # Add this entrypoint for the dashboard
+    address: ":8080"
 
 api:
-  dashboard: true
+  dashboard: true     # Already good
+  insecure: true      # Add this to allow access without authentication (for testing)
 
 providers:
   docker:
@@ -19,6 +22,6 @@ providers:
 certificatesResolvers:
   le:
     acme:
-      email: "im.aufa.ai@gmail.com"  # Replace with your email
+      email: "im.aufa.ai@gmail.com"
       storage: "/data/acme.json"
       tlsChallenge: {}

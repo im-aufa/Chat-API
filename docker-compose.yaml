@@ -10,6 +10,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./traefik:/data
     command:
+      - "--api.insecure=true"
       - "--configFile=/data/traefik.yaml"
     restart: unless-stopped
 
