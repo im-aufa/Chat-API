@@ -13,7 +13,7 @@ jobs:
       run: |
         echo "$DEPLOY_KEY" > id_rsa
         chmod 600 id_rsa
-        ls -l id_rsa  # Check file creation (debug)
+        ls -l id_rsa
         ssh -i id_rsa -o StrictHostKeyChecking=no -v aufaim@103.127.139.144 '
           echo "Connected to VPS" &&
           whoami &&
