@@ -1,19 +1,95 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aufa AI Portfolio</title>
-    <link rel="stylesheet" href="styles.css"> <!-- We’ll add this file next -->
+    <!-- Tailwind CSS via CDN (no local install needed) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Minimal custom CSS for lightness */
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            flex-grow: 1;
+        }
+    </style>
 </head>
 
-<body>
-    <h1>Aufa AI Solutions</h1>
-    <p>Explore my APIs: <a href="https://api.aufaim.com/chat">Chat API</a></p>
-    <h2>Try the Chatbot</h2>
-    <input type="text" id="chatInput" placeholder="Ask me anything...">
-    <button onclick="sendMessage()">Send</button>
-    <p id="chatResponse"></p>
-    <script src="script.js"></script> <!-- We’ll add this file after -->
+<body class="bg-gray-50 font-sans text-gray-800">
+    <!-- Header -->
+    <header class="bg-blue-500 text-white p-4 text-center">
+        <h1 class="text-2xl font-bold">Aufa AI Solutions</h1>
+    </header>
+
+    <!-- Main Content -->
+    <main class="p-4 max-w-3xl mx-auto">
+        <section class="text-center mb-6">
+            <h2 class="text-xl font-semibold">Welcome</h2>
+            <p class="mt-2 text-gray-600">
+                AI-driven solutions for real-world problems. Try the chatbot below!
+            </p>
+        </section>
+
+        <!-- Chatbot Response -->
+        <section class="bg-white p-4 rounded shadow">
+            <h3 class="text-lg font-medium mb-2">Chatbot Response</h3>
+            <p id="chatResponse" class="text-gray-600 italic">Ask me anything...</p>
+        </section>
+    </main>
+
+    <!-- Floating Chatbot -->
+    <div class="fixed bottom-4 right-4">
+        <button id="chatToggle" class="bg-blue-500 text-white p-3 rounded-full shadow hover:bg-blue-600">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z">
+                </path>
+            </svg>
+        </button>
+        <div id="chatBox" class="hidden absolute bottom-14 right-0 bg-white p-3 rounded shadow w-64">
+            <input type="text" id="chatInput" placeholder="Ask me anything..."
+                class="w-full p-1 border rounded mb-2 focus:outline-none focus:ring-1 focus:ring-blue-500">
+            <button onclick="sendMessage()"
+                class="w-full bg-blue-500 text-white p-1 rounded hover:bg-blue-600">Send</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-700 text-white text-center p-2 text-sm">
+        <p>© 2025 Aufa AI Solutions</p>
+    </footer>
+
+    <!-- Inline JavaScript (no separate file) -->
+    <script>
+        // Toggle Chatbox
+        document.getElementById("chatToggle").addEventListener("click", function () {
+            document.getElementById("chatBox").classList.toggle("hidden");
+        });
+
+        // Send Message (Mock Response)
+        function sendMessage() {
+            const input = document.getElementById("chatInput").value;
+            const responseElement = document.getElementById("chatResponse");
+            if (!input.trim()) {
+                responseElement.textContent = "Please enter a message!";
+                return;
+            }
+            responseElement.textContent = "Thinking...";
+            setTimeout(() => {
+                responseElement.textContent = "Hi! You said: '" + input + "'";
+            }, 1000);
+            document.getElementById("chatInput").value = "";
+        }
+    </script>
 </body>
 
 </html>
