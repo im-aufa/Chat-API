@@ -1,42 +1,43 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from openai import OpenAI
 import os
-import psycopg2
-from contextlib import contextmanager
+import logging
+
+# Set up logging
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 app = FastAPI()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-@contextmanager
-def get_db():
-    conn = psycopg2.connect(
-        dbname="ai_db", user="aufaim", password=os.getenv("POSTGRES_PASSWORD"),
-        host="postgres", port="5432"
-    )
-    try:
-        yield conn
-    finally:
-        conn.close()
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:8000", "https://aufaim.com"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class QueryRequest(BaseModel):
     query: str
 
 @app.post("/chat")
 async def chat(request: QueryRequest):
-    with get_db() as conn:
-        cursor = conn.cursor()
-        cursor.execute("INSERT INTO chats (query) VALUES (%s)", (request.query,))
-        conn.commit()
+    logger.debug(f"Received query: {request.query}")
     try:
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": request.query}],
             max_tokens=150,
         )
+        logger.debug(f"OpenAI response: {response.choices[0].message.content}")
         return {"response": response.choices[0].message.content.strip()}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"OpenAI API error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"OpenAI error: {str(e)}")
 
 @app.get("/")
 async def root():

@@ -13,10 +13,9 @@ services:
       - "--providers.docker"
       - "--providers.docker.exposedbydefault=false"
       - "--entryPoints.websecure.address=:443"
-      - "--certificatesresolvers.le.acme.tlschallenge=true" # Updated to match the resolver name
+      - "--certificatesresolvers.le.acme.tlschallenge=true"
       - "--certificatesresolvers.le.acme.email=im.aufa.ai@gmail.com"
-      - "--certificatesresolvers.le.acme.storage=/letsencrypt/acme.json" # Path for Let's Encrypt storage
-
+      - "--certificatesresolvers.le.acme.storage=/letsencrypt/acme.json"
     restart: unless-stopped
 
   portfolio:
@@ -26,7 +25,7 @@ services:
       - "traefik.http.routers.portfolio.rule=Host(`aufaim.com`)"
       - "traefik.http.routers.portfolio.entrypoints=websecure"
       - "traefik.http.routers.portfolio.tls=true"
-      - "traefik.http.routers.portfolio.tls.certresolver=le" # Using 'le' resolver
+      - "traefik.http.routers.portfolio.tls.certresolver=le"
       - "traefik.http.services.portfolio.loadbalancer.server.port=80"
     restart: unless-stopped
 
@@ -39,25 +38,13 @@ services:
       - "traefik.http.routers.chat-api.rule=Host(`api.aufaim.com`)"
       - "traefik.http.routers.chat-api.entrypoints=websecure"
       - "traefik.http.routers.chat-api.tls=true"
-      - "traefik.http.routers.chat-api.tls.certresolver=le" # Using 'le' resolver
+      - "traefik.http.routers.chat-api.tls.certresolver=le"
       - "traefik.http.services.chat-api.loadbalancer.server.port=8000"
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-    depends_on:
-      - postgres
-    restart: unless-stopped
-
-  postgres:
-    image: postgres:15
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_USER=aufaim
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=ai_db
+      # Removed POSTGRES_PASSWORD since no DB
+      # Removed depends_on: postgres
     restart: unless-stopped
 
 volumes:
-  postgres-data:
-  letsencrypt:
+  letsencrypt: # Removed postgres-data
