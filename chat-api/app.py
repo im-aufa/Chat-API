@@ -28,9 +28,17 @@ class QueryRequest(BaseModel):
 async def chat(request: QueryRequest):
     logger.debug(f"Received query: {request.query}")
     try:
+        # Define Cerince's system message
+        system_message = (
+            "I am Cerince, your friendly assistant! I can chat with you about anything "
+            "or provide specific information about menstruation and cervix when relevant."
+        )
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
-            messages=[{"role": "user", "content": request.query}],
+            messages=[
+                {"role": "system", "content": system_message},  # Add this
+                {"role": "user", "content": request.query}
+            ],
             max_tokens=150,
         )
         logger.debug(f"OpenAI response: {response.choices[0].message.content}")
