@@ -6,10 +6,7 @@ python-dotenv==1.0.1
 google-auth-oauthlib==1.2.1
 google-auth-httplib2==0.2.0
 google-api-python-client==2.149.0
-docling==2.2.0
-docling-core==0.2.1
-docling-ibm-generative==0.1.0
-docling-parse==0.2.2
+docling==2.36.1  # Updated to latest compatible version
 tiktoken==0.8.0
 gunicorn==23.0.0
 numpy==2.1.1
