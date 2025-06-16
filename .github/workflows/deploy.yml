@@ -18,6 +18,8 @@ jobs:
           echo "Connected to VPS" &&
           whoami &&
           cd /home/aufaim/aufaim-portfolio &&
+          git fetch origin &&
+          git reset --hard origin/master &&
           git pull origin master &&
           docker-compose down &&
           docker-compose up -d --build &&
