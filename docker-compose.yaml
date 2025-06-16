@@ -4,19 +4,21 @@ services:
     image: traefik:v3.1
     ports:
       - "443:443"
-      - "8080:8080" # Dashboard
+      - "8080:8080"
     volumes:
       - letsencrypt:/letsencrypt
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     command:
-      - "--api.insecure=true"
-      - "--providers.docker"
+      - "--api.insecure=true" # Set to false later
+      - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
-      - "--entryPoints.websecure.address=:443"
+      - "--entrypoints.websecure.address=:443"
       - "--certificatesresolvers.le.acme.tlschallenge=true"
       - "--certificatesresolvers.le.acme.email=im.aufa.ai@gmail.com"
       - "--certificatesresolvers.le.acme.storage=/letsencrypt/acme.json"
     restart: unless-stopped
+    networks:
+      - web
 
   portfolio:
     build: ./portfolio-site
@@ -28,11 +30,15 @@ services:
       - "traefik.http.routers.portfolio.tls.certresolver=le"
       - "traefik.http.services.portfolio.loadbalancer.server.port=80"
     restart: unless-stopped
+    networks:
+      - web
 
   chat-api:
     build: ./chat-api
-    ports:
-      - "8000:8000"
+    depends_on:
+      - postgres
+    volumes:
+      - chat-api-data:/app/data
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.chat-api.rule=Host(`api.aufaim.com`)"
@@ -42,9 +48,35 @@ services:
       - "traefik.http.services.chat-api.loadbalancer.server.port=8000"
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
-      # Removed POSTGRES_PASSWORD since no DB
-      # Removed depends_on: postgres
+      - API_KEY=${API_KEY}
+      - GOOGLE_DRIVE_FOLDER_ID=${GOOGLE_DRIVE_FOLDER_ID}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_PORT=${POSTGRES_PORT}
     restart: unless-stopped
+    networks:
+      - web
+
+  postgres:
+    image: postgres:16
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    restart: unless-stopped
+    networks:
+      - web
 
 volumes:
-  letsencrypt: # Removed postgres-data
+  letsencrypt:
+  chat-api-data:
+  postgres-data:
+
+
+networks:
+  web:
+    driver: bridge
