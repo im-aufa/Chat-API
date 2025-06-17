@@ -220,6 +220,8 @@ def process_documents(source_type: str, google_drive_folder_id: Optional[str] = 
     converter = DocumentConverter()
     chunker = HybridChunker(tokenizer="bert-base-uncased", max_tokens=MAX_TOKENS - 100, merge_peers=True)
     all_chunks_to_store = []
+    batch_size = 5  # Process 5 files at a time to reduce memory usage
+
     if source_type == "google_drive":
         if not google_drive_folder_id:
             raise ValueError("Google Drive Folder ID required.")
@@ -227,36 +229,49 @@ def process_documents(source_type: str, google_drive_folder_id: Optional[str] = 
         if not gdrive_files:
             logger.info("No files found in Google Drive folder.")
             return
-        for file_info in gdrive_files:
-            if file_info.get('mimeType') == 'application/vnd.google-apps.folder':
-                continue
-            file_name = file_info['name']
-            file_id = file_info['id']
-            mime_type = file_info['mimeType']
-            downloaded_path = None
-            try:
-                downloaded_path = download_gdrive_file(file_id, file_name, mime_type)
-                result = converter.convert(downloaded_path)
-                document = result.document
-                chunk_iter = chunker.chunk(dl_doc=document)
-                doc_chunks = list(chunk_iter)
-                if not doc_chunks:
-                    logger.warning(f"No chunks for file: {file_name}")
+
+        # Process files in batches
+        for i in range(0, len(gdrive_files), batch_size):
+            batch_files = gdrive_files[i:i + batch_size]
+            logger.info(f"Processing batch of {len(batch_files)} files (batch {i//batch_size + 1})")
+            
+            for file_info in batch_files:
+                if file_info.get('mimeType') == 'application/vnd.google-apps.folder':
                     continue
-                chunk_texts = [chunk.text for chunk in doc_chunks]
-                embeddings = embed_text(chunk_texts)
-                for i, chunk in enumerate(doc_chunks):
-                    page_numbers = sorted(list(set(prov.page_no for item in chunk.meta.doc_items for prov in item.prov if prov.page_no is not None))) or None
-                    title = chunk.meta.headings[0] if chunk.meta.headings else None
-                    all_chunks_to_store.append((
-                        file_id, file_name, i, chunk.text, embeddings[i],
-                        chunk.meta.origin.filename, page_numbers, title, "google_drive"
-                    ))
-            except Exception as e:
-                logger.error(f"Error processing file {file_name}: {e}")
-            finally:
-                if downloaded_path and os.path.exists(downloaded_path):
-                    os.remove(downloaded_path)
+                file_name = file_info['name']
+                file_id = file_info['id']
+                mime_type = file_info['mimeType']
+                downloaded_path = None
+                try:
+                    downloaded_path = download_gdrive_file(file_id, file_name, mime_type)
+                    result = converter.convert(downloaded_path)
+                    document = result.document
+                    chunk_iter = chunker.chunk(dl_doc=document)
+                    doc_chunks = list(chunk_iter)
+                    if not doc_chunks:
+                        logger.warning(f"No chunks for file: {file_name}")
+                        continue
+                    chunk_texts = [chunk.text for chunk in doc_chunks]
+                    embeddings = embed_text(chunk_texts)
+                    for j, chunk in enumerate(doc_chunks):
+                        page_numbers = sorted(list(set(prov.page_no for item in chunk.meta.doc_items for prov in item.prov if prov.page_no is not None))) or None
+                        title = chunk.meta.headings[0] if chunk.meta.headings else None
+                        all_chunks_to_store.append((
+                            file_id, file_name, j, chunk.text, embeddings[j],
+                            chunk.meta.origin.filename, page_numbers, title, "google_drive"
+                        ))
+                except Exception as e:
+                    logger.error(f"Error processing file {file_name}: {e}")
+                finally:
+                    if downloaded_path and os.path.exists(downloaded_path):
+                        os.remove(downloaded_path)
+            
+            # Store chunks for the current batch
+            if all_chunks_to_store:
+                store_chunks(all_chunks_to_store)
+                all_chunks_to_store = []  # Clear chunks after storing to free memory
+                logger.info(f"Stored chunks for batch {i//batch_size + 1}")
+
     elif source_type == "local":
         if not local_folder_path or not os.path.isdir(local_folder_path):
             raise ValueError(f"Invalid local folder path: {local_folder_path}")
@@ -286,8 +301,8 @@ def process_documents(source_type: str, google_drive_folder_id: Optional[str] = 
                     ))
             except Exception as e:
                 logger.error(f"Error processing PDF {doc_name}: {e}")
-    if all_chunks_to_store:
-        store_chunks(all_chunks_to_store)
+        if all_chunks_to_store:
+            store_chunks(all_chunks_to_store)
 
 # --- RAG Query Functions ---
 def search_chunks(query: str, n_results: int = 5) -> List[dict]:

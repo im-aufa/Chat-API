@@ -67,6 +67,7 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    command: -c shared_buffers=64MB -c work_mem=2MB -c max_connections=20
     restart: unless-stopped
     networks:
       - web
