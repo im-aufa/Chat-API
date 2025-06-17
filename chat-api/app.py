@@ -1,11 +1,9 @@
 import os
-import pickle
 import logging
 from typing import List, Optional
 import glob
 import tiktoken
-from google.auth.transport.requests import Request
-from google_auth_oauthlib.flow import InstalledAppFlow
+from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseDownload
 from docling.chunking import HybridChunker
@@ -14,11 +12,9 @@ from dotenv import load_dotenv
 from openai import OpenAI
 import psycopg2
 from psycopg2.extras import execute_values
-import numpy as np
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
-import uvicorn
 from fastapi.security import APIKeyHeader
 
 # --- Setup ---
@@ -61,7 +57,6 @@ CHAT_MODEL = "gpt-3.5-turbo"  # Accessible model
 # --- Google Drive Configuration ---
 SCOPES = ['https://www.googleapis.com/auth/drive.readonly']
 CREDENTIALS_FILE = '/app/credentials.json'
-TOKEN_FILE = '/app/data/token.pickle'
 DEFAULT_GOOGLE_DRIVE_FOLDER_ID = os.getenv('GOOGLE_DRIVE_FOLDER_ID')
 
 # --- PostgreSQL Configuration ---
@@ -94,29 +89,11 @@ async def verify_api_key(api_key: str = Depends(api_key_header)):
 
 # --- Google Drive Functions ---
 def authenticate_google_drive():
-    creds = None
-    if os.path.exists(TOKEN_FILE):
-        with open(TOKEN_FILE, 'rb') as token:
-            creds = pickle.load(token)
-    
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            try:
-                creds.refresh(Request())
-            except Exception as e:
-                logger.error(f"Failed to refresh Google token: {e}")
-                creds = None
-        if not creds:
-            if not os.path.exists(CREDENTIALS_FILE):
-                raise FileNotFoundError(f"Google Drive credentials file ('{CREDENTIALS_FILE}') not found.")
-            flow = InstalledAppFlow.from_client_secrets_file(CREDENTIALS_FILE, SCOPES)
-            creds = flow.run_local_server(port=0)
-        
-        os.makedirs(os.path.dirname(TOKEN_FILE), exist_ok=True)
-        with open(TOKEN_FILE, 'wb') as token:
-            pickle.dump(creds, token)
-    
-    return build('drive', 'v3', credentials=creds)
+    logger.info("Authenticating with Google Drive using service account...")
+    credentials = service_account.Credentials.from_service_account_file(
+        CREDENTIALS_FILE, scopes=SCOPES
+    )
+    return build('drive', 'v3', credentials=credentials)
 
 def list_gdrive_files(folder_id):
     service = authenticate_google_drive()
