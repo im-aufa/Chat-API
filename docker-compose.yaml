@@ -24,10 +24,12 @@ services:
     build:
       context: ./portfolio-site
       dockerfile: dockerfile
-      secrets:
-        - api_key_secret
+      # This passes the API_KEY from your .env to the Dockerfile as a build argument
+      args:
+        API_KEY: ${API_KEY}
+    # Removed: 'environment' section for API_KEY as it's only needed for build-time substitution
     env_file:
-      - .env
+      - .env # Keep this to load API_KEY into the build args
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.portfolio.rule=Host(`aufaim.com`)"
@@ -53,8 +55,9 @@ services:
       - "traefik.http.routers.chat-api.tls.certresolver=le"
       - "traefik.http.services.chat-api.loadbalancer.server.port=8000"
     environment:
+      # These environment variables are needed by the FastAPI app at runtime
       - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - API_KEY=${API_KEY}
+      - API_KEY=${API_KEY} # This API_KEY is for the chat-api to validate incoming requests
       - GOOGLE_DRIVE_FOLDER_ID=${GOOGLE_DRIVE_FOLDER_ID}
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
@@ -87,7 +90,3 @@ volumes:
 networks:
   web:
     driver: bridge
-
-secrets:
-  api_key_secret:
-    environment: API_KEY
