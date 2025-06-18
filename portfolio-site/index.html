@@ -7,6 +7,7 @@
     <title>Aufa AI Portfolio</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <style>
+        /* Base styles */
         :root {
             --primary: #2563eb;
             --primary-hover: #1e40af;
@@ -16,6 +17,8 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            font-family: 'Inter', sans-serif;
+            /* Using Inter font as per instructions */
         }
 
         main {
@@ -25,8 +28,11 @@
 
         .container {
             max-width: 960px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
+        /* Chatbox specific styles */
         #chatBox {
             position: fixed;
             bottom: 80px;
@@ -42,6 +48,9 @@
             opacity: 0;
             pointer-events: none;
             z-index: 1000;
+            display: flex;
+            /* Flexbox for chat content */
+            flex-direction: column;
         }
 
         #chatBox:not(.hidden) {
@@ -51,26 +60,42 @@
         }
 
         #chatMessages {
+            flex-grow: 1;
+            /* Allow messages to take available space */
             padding: 1rem;
             max-height: 300px;
+            /* Max height for scrollable messages */
             overflow-y: auto;
+            word-wrap: break-word;
+            /* Ensure long words wrap */
         }
 
         .message {
             margin-bottom: 0.5rem;
             padding: 0.5rem;
             border-radius: 6px;
+            font-size: 0.9rem;
+            line-height: 1.4;
         }
 
         .message.user {
             background: var(--primary);
             color: white;
             text-align: right;
+            margin-left: auto;
+            /* Push user messages to the right */
+            max-width: 80%;
+            /* Limit width of user messages */
         }
 
         .message.bot {
             background: #f1f5f9;
             color: #1f2937;
+            text-align: left;
+            margin-right: auto;
+            /* Push bot messages to the left */
+            max-width: 80%;
+            /* Limit width of bot messages */
         }
 
         #chatToggle {
@@ -78,6 +103,23 @@
             bottom: 20px;
             right: 20px;
             z-index: 1001;
+            border-radius: 50%;
+            /* Make it circular */
+            width: 56px;
+            /* Larger touch target */
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        #chatToggle svg {
+            width: 24px;
+            /* SVG icon size */
+            height: 24px;
+            stroke: white;
+            /* Ensure the icon is visible */
         }
 
         .spinner {
@@ -89,6 +131,20 @@
             height: 16px;
             animation: spin 1s linear infinite;
             margin-left: 0.5rem;
+            vertical-align: middle;
+        }
+
+        .typing-indicator {
+            display: none;
+            /* Hidden by default */
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 6px;
+            background: #e0f2f7;
+            /* Light blue for typing */
+            color: #007bb5;
+            font-style: italic;
+            font-size: 0.9rem;
         }
 
         @keyframes spin {
@@ -102,13 +158,97 @@
         }
 
         .project-card {
-            transition: transform 0.2s ease;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .project-card:hover {
             transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+            /* Add more pronounced shadow on hover */
+        }
+
+        /* Responsive Design */
+
+        /* Medium devices (tablets, 768px and up) */
+        @media (max-width: 768px) {
+            main {
+                padding: 1.5rem 0.5rem;
+                /* Reduce padding on smaller screens */
+            }
+
+            .container {
+                padding: 0 1rem;
+                /* Add horizontal padding to container itself */
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+                /* Stack grid items on small screens */
+            }
+
+            #chatBox {
+                width: 90%;
+                /* Make chatbox wider on small screens */
+                right: 5%;
+                /* Center it roughly */
+                left: 5%;
+                bottom: 80px;
+                max-height: 60vh;
+                /* Adjust max height for smaller screens */
+            }
+
+            #chatToggle {
+                bottom: 15px;
+                right: 15px;
+                width: 50px;
+                height: 50px;
+            }
+
+            h1 {
+                font-size: 2em;
+                /* Adjust font sizes for smaller screens */
+            }
+
+            h2 {
+                font-size: 1.6em;
+            }
+        }
+
+        /* Small devices (phones, 480px and up) */
+        @media (max-width: 480px) {
+            main {
+                padding: 1rem 0.25rem;
+            }
+
+            .container {
+                padding: 0 0.5rem;
+            }
+
+            #chatBox {
+                width: 95%;
+                right: 2.5%;
+                left: 2.5%;
+                bottom: 70px;
+                max-height: 70vh;
+                /* Allow more height on very small screens */
+                border-radius: 0;
+                /* No rounded corners on full-width chatbox */
+            }
+
+            #chatMessages {
+                padding: 0.75rem;
+            }
+
+            #chatToggle {
+                bottom: 10px;
+                right: 10px;
+                width: 45px;
+                height: 45px;
+            }
         }
     </style>
+    <!-- Link to Inter font for better typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -130,7 +270,7 @@
         <section id="hero" class="text-center">
             <h1>Welcome to Aufa AI</h1>
             <p>Building innovative AI-driven solutions for real-world challenges.</p>
-            <a href="#projects" class="btn btn-primary mt-4">View Projects</a>
+            <a href="#projects" role="button">View Projects</a> <!-- Using Pico.css button role -->
         </section>
 
         <section id="about" class="mt-8">
@@ -163,7 +303,8 @@
     </main>
 
     <button id="chatToggle" class="contrast">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <!-- Replaced stroke: currentColor with explicit white for visibility on contrast button -->
+        <svg fill="none" stroke="#fff" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z">
             </path>
