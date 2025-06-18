@@ -77,7 +77,7 @@ function showTypingIndicator() {
         if (!typingIndicatorElement) { // Create only if it doesn't exist
             typingIndicatorElement = document.createElement("div");
             typingIndicatorElement.className = "typing-indicator message bot"; // Use message bot styling
-            typingIndicatorElement.textContent = "Bot is typing...";
+            typingIndicatorElement.textContent = "Cerince is typing...";
             typingIndicatorElement.id = "typingIndicator"; // Give it an ID for easy lookup
         }
         typingIndicatorElement.style.display = "block"; // Make it visible

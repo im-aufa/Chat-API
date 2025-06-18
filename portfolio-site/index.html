@@ -35,22 +35,22 @@
         /* Chatbox specific styles */
         #chatBox {
             position: fixed;
-            bottom: 80px;
+            bottom: 100px;
             right: 20px;
-            width: 320px;
-            max-height: 400px;
+            width: 360px;
+            max-height: 500px;
             overflow-y: auto;
             background: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-            transition: opacity 0.3s ease, transform 0.3s ease;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
             transform: translateY(10px);
             opacity: 0;
             pointer-events: none;
             z-index: 1000;
             display: flex;
-            /* Flexbox for chat content */
             flex-direction: column;
+            border: 1px solid rgba(0, 0, 0, 0.1);
         }
 
         #chatBox:not(.hidden) {
@@ -61,21 +61,18 @@
 
         #chatMessages {
             flex-grow: 1;
-            /* Allow messages to take available space */
-            padding: 1rem;
-            max-height: 300px;
-            /* Max height for scrollable messages */
+            padding: 1.25rem;
+            max-height: 380px;
             overflow-y: auto;
             word-wrap: break-word;
-            /* Ensure long words wrap */
         }
 
         .message {
-            margin-bottom: 0.5rem;
-            padding: 0.5rem;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            line-height: 1.4;
+            margin-bottom: 0.75rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            line-height: 1.5;
         }
 
         .message.user {
@@ -83,9 +80,7 @@
             color: white;
             text-align: right;
             margin-left: auto;
-            /* Push user messages to the right */
-            max-width: 80%;
-            /* Limit width of user messages */
+            max-width: 85%;
         }
 
         .message.bot {
@@ -93,9 +88,7 @@
             color: #1f2937;
             text-align: left;
             margin-right: auto;
-            /* Push bot messages to the left */
-            max-width: 80%;
-            /* Limit width of bot messages */
+            max-width: 85%;
         }
 
         #chatToggle {
@@ -104,22 +97,26 @@
             right: 20px;
             z-index: 1001;
             border-radius: 50%;
-            /* Make it circular */
-            width: 56px;
-            /* Larger touch target */
-            height: 56px;
+            width: 64px;
+            height: 64px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            background: var(--primary);
+        }
+
+        #chatToggle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
         }
 
         #chatToggle svg {
-            width: 24px;
-            /* SVG icon size */
-            height: 24px;
+            width: 32px;
+            height: 32px;
             stroke: white;
-            /* Ensure the icon is visible */
+            stroke-width: 2.5;
         }
 
         .spinner {
@@ -136,12 +133,10 @@
 
         .typing-indicator {
             display: none;
-            /* Hidden by default */
             margin-bottom: 0.5rem;
             padding: 0.5rem;
             border-radius: 6px;
             background: #e0f2f7;
-            /* Light blue for typing */
             color: #007bb5;
             font-style: italic;
             font-size: 0.9rem;
@@ -164,7 +159,6 @@
         .project-card:hover {
             transform: translateY(-4px);
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-            /* Add more pronounced shadow on hover */
         }
 
         /* Responsive Design */
@@ -173,28 +167,22 @@
         @media (max-width: 768px) {
             main {
                 padding: 1.5rem 0.5rem;
-                /* Reduce padding on smaller screens */
             }
 
             .container {
                 padding: 0 1rem;
-                /* Add horizontal padding to container itself */
             }
 
             .grid {
                 grid-template-columns: 1fr;
-                /* Stack grid items on small screens */
             }
 
             #chatBox {
                 width: 90%;
-                /* Make chatbox wider on small screens */
                 right: 5%;
-                /* Center it roughly */
                 left: 5%;
                 bottom: 80px;
                 max-height: 60vh;
-                /* Adjust max height for smaller screens */
             }
 
             #chatToggle {
@@ -206,7 +194,6 @@
 
             h1 {
                 font-size: 2em;
-                /* Adjust font sizes for smaller screens */
             }
 
             h2 {
@@ -230,9 +217,7 @@
                 left: 2.5%;
                 bottom: 70px;
                 max-height: 70vh;
-                /* Allow more height on very small screens */
                 border-radius: 0;
-                /* No rounded corners on full-width chatbox */
             }
 
             #chatMessages {
@@ -245,6 +230,32 @@
                 width: 45px;
                 height: 45px;
             }
+        }
+
+        #chatBox form {
+            padding: 1rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            background: #f8fafc;
+        }
+
+        #chatBox input {
+            margin-bottom: 0.5rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        #chatBox button {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 8px;
+            background: var(--primary);
+            color: white;
+            transition: background-color 0.2s ease;
+        }
+
+        #chatBox button:hover {
+            background: var(--primary-hover);
         }
     </style>
     <!-- Link to Inter font for better typography -->
@@ -275,7 +286,7 @@
 
         <section id="about" class="mt-8">
             <h2>About Me</h2>
-            <p>I’m Aufa, a passionate AI developer specializing in machine learning, NLP, and web/mobile apps. My
+            <p>I'm Aufa, a passionate AI developer specializing in machine learning, NLP, and web/mobile apps. My
                 mission is to create impactful solutions.</p>
         </section>
 
@@ -298,7 +309,7 @@
 
         <section id="contact" class="mt-8">
             <h2>Contact</h2>
-            <p>Email: <a href="mailto:aufaim@example.com">aufaim@example.com</a></p>
+            <p>Email: <a href="mailto:aufailhamm@gmail.com">aufailhamm@gmail.com</a></p>
         </section>
     </main>
 
