@@ -50,7 +50,7 @@ function sendMessage() {
     input.value = "";
     spinner.style.display = "inline-block";
 
-    const apiKey = "{{API_KEY}}";
+    const apiKey = "${API_KEY}";
     console.log("API Key:", apiKey); // Debug
 
     fetch("https://api.aufaim.com/chat", {
