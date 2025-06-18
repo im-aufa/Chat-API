@@ -22,6 +22,8 @@ services:
 
   portfolio:
     build: ./portfolio-site
+    environment:
+      - API_KEY=${API_KEY}
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.portfolio.rule=Host(`aufaim.com`)"

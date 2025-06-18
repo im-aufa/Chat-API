@@ -5,10 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aufa AI Portfolio</title>
-    <!-- Tailwind CSS via CDN (no local install needed) -->
+    <!-- Tailwind CSS via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Minimal custom CSS for lightness */
         body {
             margin: 0;
             padding: 0;
@@ -68,28 +67,8 @@
         <p>© 2025 Aufa AI Solutions</p>
     </footer>
 
-    <!-- Inline JavaScript (no separate file) -->
-    <script>
-        // Toggle Chatbox
-        document.getElementById("chatToggle").addEventListener("click", function () {
-            document.getElementById("chatBox").classList.toggle("hidden");
-        });
-
-        // Send Message (Mock Response)
-        function sendMessage() {
-            const input = document.getElementById("chatInput").value;
-            const responseElement = document.getElementById("chatResponse");
-            if (!input.trim()) {
-                responseElement.textContent = "Please enter a message!";
-                return;
-            }
-            responseElement.textContent = "Thinking...";
-            setTimeout(() => {
-                responseElement.textContent = "Hi! You said: '" + input + "'";
-            }, 1000);
-            document.getElementById("chatInput").value = "";
-        }
-    </script>
+    <!-- External JavaScript -->
+    <script src="/script.js"></script>
 </body>
 
 </html>
