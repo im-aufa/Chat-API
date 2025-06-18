@@ -21,7 +21,9 @@ services:
       - web
 
   portfolio:
-    build: ./portfolio-site
+    build:
+      context: ./portfolio
+      dockerfile: dockerfile
     environment:
       - API_KEY=${API_KEY}
     labels:
