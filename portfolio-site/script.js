@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // Load projects
     fetch("/projects.json")
         .then(response => response.json())
         .then(projects => {
@@ -20,7 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .catch(error => console.error("Error loading projects:", error));
 
-    // Chat toggle
     document.getElementById("chatToggle").addEventListener("click", () => {
         const chatBox = document.getElementById("chatBox");
         chatBox.classList.toggle("hidden");
@@ -52,15 +50,19 @@ function sendMessage() {
     input.value = "";
     spinner.style.display = "inline-block";
 
+    const apiKey = "{{API_KEY}}";
+    console.log("API Key:", apiKey); // Debug
+
     fetch("https://api.aufaim.com/chat", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "X-API-Key": "{{API_KEY}}"
+            "X-API-Key": apiKey
         },
         body: JSON.stringify({ query, n_results: 5 })
     })
         .then(response => {
+            console.log("Response Status:", response.status); // Debug
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             return response.json();
         })
@@ -71,5 +73,6 @@ function sendMessage() {
         .catch(error => {
             addMessage(`Error: ${error.message}`, false);
             spinner.style.display = "none";
+            console.error("Fetch Error:", error); // Debug
         });
 }
