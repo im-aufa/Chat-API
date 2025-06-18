@@ -1,12 +1,13 @@
+# syntax=docker/dockerfile:1.4  
 FROM nginx:alpine
-ARG API_KEY
 COPY index.html /usr/share/nginx/html/
 COPY projects.json /usr/share/nginx/html/
 COPY script.js /tmp/script.js
 RUN apk add --no-cache gettext && \
-    echo "API_KEY=$API_KEY" > /tmp/env.debug && \
-    if [ -z "$API_KEY" ]; then echo "Error: API_KEY is not set" >> /tmp/env.debug; exit 1; fi && \
-    envsubst '${API_KEY}' < /tmp/script.js > /usr/share/nginx/html/script.js && \
+    --mount=type=secret,id=api_key \
+    if [ -z "$(cat /run/secrets/api_key)" ]; then echo "Error: API_KEY is not set" >> /tmp/env.debug; exit 1; fi && \
+    API_KEY=$(cat /run/secrets/api_key) envsubst '${API_KEY}' < /tmp/script.js > /usr/share/nginx/html/script.js && \
     rm /tmp/script.js
+
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
