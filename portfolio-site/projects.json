@@ -1,0 +1,23 @@
+[
+    {
+        "title": "Cerina",
+        "description": "A Flutter app integrated with a RAG-based AI chatbot for answering user queries.",
+        "tech": [
+            "Flutter",
+            "FastAPI",
+            "PostgreSQL"
+        ],
+        "link": "https://github.com/im-aufa/cerina"
+    },
+    {
+        "title": "Chat-API",
+        "description": "A FastAPI service for processing documents and answering queries using RAG and pgvector.",
+        "tech": [
+            "FastAPI",
+            "PostgreSQL",
+            "pgvector",
+            "Google Drive API"
+        ],
+        "link": "https://github.com/im-aufa/aufaim-portfolio"
+    }
+]

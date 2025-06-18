@@ -1,16 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aufa AI Portfolio</title>
-    <!-- Tailwind CSS via CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1e40af;
+        }
+
         body {
-            margin: 0;
-            padding: 0;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -18,56 +20,169 @@
 
         main {
             flex-grow: 1;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 960px;
+        }
+
+        #chatBox {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 320px;
+            max-height: 400px;
+            overflow-y: auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            transform: translateY(10px);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        #chatBox:not(.hidden) {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        #chatMessages {
+            padding: 1rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .message {
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 6px;
+        }
+
+        .message.user {
+            background: var(--primary);
+            color: white;
+            text-align: right;
+        }
+
+        .message.bot {
+            background: #f1f5f9;
+            color: #1f2937;
+        }
+
+        #chatToggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1001;
+        }
+
+        .spinner {
+            display: none;
+            border: 2px solid var(--primary);
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            animation: spin 1s linear infinite;
+            margin-left: 0.5rem;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .project-card {
+            transition: transform 0.2s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-4px);
         }
     </style>
 </head>
 
-<body class="bg-gray-50 font-sans text-gray-800">
-    <!-- Header -->
-    <header class="bg-blue-500 text-white p-4 text-center">
-        <h1 class="text-2xl font-bold">Aufa AI Solutions</h1>
+<body>
+    <header class="container">
+        <nav>
+            <ul>
+                <li><strong>Aufa AI Solutions</strong></li>
+            </ul>
+            <ul>
+                <li><a href="#about">About</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
     </header>
 
-    <!-- Main Content -->
-    <main class="p-4 max-w-3xl mx-auto">
-        <section class="text-center mb-6">
-            <h2 class="text-xl font-semibold">Welcome</h2>
-            <p class="mt-2 text-gray-600">
-                AI-driven solutions for real-world problems. Try the chatbot below!
-            </p>
+    <main class="container">
+        <section id="hero" class="text-center">
+            <h1>Welcome to Aufa AI</h1>
+            <p>Building innovative AI-driven solutions for real-world challenges.</p>
+            <a href="#projects" class="btn btn-primary mt-4">View Projects</a>
         </section>
 
-        <!-- Chatbot Response -->
-        <section class="bg-white p-4 rounded shadow">
-            <h3 class="text-lg font-medium mb-2">Chatbot Response</h3>
-            <p id="chatResponse" class="text-gray-600 italic">Ask me anything...</p>
+        <section id="about" class="mt-8">
+            <h2>About Me</h2>
+            <p>I’m Aufa, a passionate AI developer specializing in machine learning, NLP, and web/mobile apps. My
+                mission is to create impactful solutions.</p>
+        </section>
+
+        <section id="projects" class="mt-8">
+            <h2>Projects</h2>
+            <div id="projectList" class="grid"></div>
+        </section>
+
+        <section id="skills" class="mt-8">
+            <h2>Skills</h2>
+            <ul class="grid">
+                <li>Python (FastAPI, Flask)</li>
+                <li>Flutter (Dart)</li>
+                <li>PostgreSQL (pgvector)</li>
+                <li>Docker & Docker Compose</li>
+                <li>AI/ML (OpenAI, NLP)</li>
+                <li>HTML/CSS/JavaScript</li>
+            </ul>
+        </section>
+
+        <section id="contact" class="mt-8">
+            <h2>Contact</h2>
+            <p>Email: <a href="mailto:aufaim@example.com">aufaim@example.com</a></p>
         </section>
     </main>
 
-    <!-- Floating Chatbot -->
-    <div class="fixed bottom-4 right-4">
-        <button id="chatToggle" class="bg-blue-500 text-white p-3 rounded-full shadow hover:bg-blue-600">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z">
-                </path>
-            </svg>
-        </button>
-        <div id="chatBox" class="hidden absolute bottom-14 right-0 bg-white p-3 rounded shadow w-64">
-            <input type="text" id="chatInput" placeholder="Ask me anything..."
-                class="w-full p-1 border rounded mb-2 focus:outline-none focus:ring-1 focus:ring-blue-500">
-            <button onclick="sendMessage()"
-                class="w-full bg-blue-500 text-white p-1 rounded hover:bg-blue-600">Send</button>
-        </div>
+    <button id="chatToggle" class="contrast">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z">
+            </path>
+        </svg>
+    </button>
+    <div id="chatBox" class="hidden">
+        <div id="chatMessages"></div>
+        <form onsubmit="sendMessage(); return false;" class="p-4">
+            <input type="text" id="chatInput" placeholder="Ask me anything..." autocomplete="off" required>
+            <button type="submit">
+                Send <span id="chatSpinner" class="spinner"></span>
+            </button>
+        </form>
     </div>
 
-    <!-- Footer -->
-    <footer class="bg-gray-700 text-white text-center p-2 text-sm">
+    <footer class="container text-center mt-8">
         <p>© 2025 Aufa AI Solutions</p>
     </footer>
 
-    <!-- External JavaScript -->
     <script src="/script.js"></script>
 </body>
 

@@ -1,5 +1,9 @@
 FROM nginx:alpine
 COPY index.html /usr/share/nginx/html/
-COPY script.js /usr/share/nginx/html/
+COPY projects.json /usr/share/nginx/html/
+COPY script.js /tmp/script.js
+RUN apk add --no-cache gettext && \
+    envsubst '${API_KEY}' < /tmp/script.js > /usr/share/nginx/html/script.js && \
+    rm /tmp/script.js
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
