@@ -11,6 +11,19 @@
         :root {
             --primary: #2563eb;
             --primary-hover: #1e40af;
+            --text-primary: #1f2937;
+            --text-secondary: #4b5563;
+            --bg-light: #ffffff;
+            --bg-off: #f8fafc;
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 2rem;
+            --spacing-lg: 3rem;
+            --spacing-xl: 4rem;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.05);
         }
 
         body {
@@ -18,244 +31,432 @@
             display: flex;
             flex-direction: column;
             font-family: 'Inter', sans-serif;
-            /* Using Inter font as per instructions */
+            color: var(--text-primary);
+            line-height: 1.6;
+            background: var(--bg-light);
         }
 
         main {
             flex-grow: 1;
-            padding: 2rem 1rem;
+            padding: var(--spacing-md) var(--spacing-sm);
         }
 
         .container {
-            max-width: 960px;
+            max-width: 1200px;
             margin-left: auto;
             margin-right: auto;
+            padding: 0 var(--spacing-md);
         }
 
-        /* Chatbox specific styles */
+        /* Typography */
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: var(--spacing-sm);
+            color: var(--text-primary);
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            line-height: 1.3;
+            margin-bottom: var(--spacing-md);
+            color: var(--text-primary);
+        }
+
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+            color: var(--text-primary);
+        }
+
+        p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-md);
+            max-width: 65ch;
+        }
+
+        /* Navigation */
+        nav {
+            padding: var(--spacing-sm) 0;
+            background: var(--bg-light);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        nav strong {
+            font-size: 1.25rem;
+            color: var(--primary);
+        }
+
+        nav a {
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-sm);
+            transition: all 0.2s ease;
+        }
+
+        nav a:hover {
+            background: var(--bg-off);
+        }
+
+        /* Hero Section */
+        #hero {
+            text-align: center;
+            padding: var(--spacing-xl) 0;
+            margin-bottom: var(--spacing-xl);
+        }
+
+        #hero p {
+            font-size: 1.2rem;
+            margin: 0 auto var(--spacing-md);
+            max-width: 600px;
+            color: var(--text-secondary);
+        }
+
+        #hero a[role="button"] {
+            font-size: 1rem;
+            padding: 0.75rem 2rem;
+            border-radius: var(--radius-sm);
+            transition: all 0.2s ease;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        #hero a[role="button"]:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        /* Skills Section */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+        }
+
+        .skill-card {
+            background: var(--bg-off);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            transition: all 0.2s ease;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .skill-card h3 {
+            margin-bottom: var(--spacing-sm);
+            font-size: 1.2rem;
+        }
+
+        .skill-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .skill-card li {
+            padding: var(--spacing-xs) 0;
+            color: var(--text-secondary);
+        }
+
+        /* Contact Section */
+        #contact {
+            background: var(--bg-off);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+            text-align: center;
+            margin-top: var(--spacing-xl);
+        }
+
+        #contact p {
+            margin-bottom: var(--spacing-sm);
+        }
+
+        #contact a {
+            color: var(--primary);
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.2s ease;
+            font-size: 1.1rem;
+        }
+
+        #contact a:hover {
+            color: var(--primary-hover);
+        }
+
+        /* Chat Box Styles */
         #chatBox {
             position: fixed;
             bottom: 100px;
             right: 20px;
-            width: 360px;
-            max-height: 500px;
-            overflow-y: auto;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-            transition: all 0.3s ease;
-            transform: translateY(10px);
-            opacity: 0;
-            pointer-events: none;
-            z-index: 1000;
+            width: 380px;
+            max-height: 600px;
+            background: var(--bg-light);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md);
             display: flex;
             flex-direction: column;
-            border: 1px solid rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(10px);
+            pointer-events: none;
         }
 
         #chatBox:not(.hidden) {
-            transform: translateY(0);
             opacity: 1;
+            transform: translateY(0);
             pointer-events: auto;
         }
 
         #chatMessages {
             flex-grow: 1;
-            padding: 1.25rem;
-            max-height: 380px;
+            padding: var(--spacing-sm);
             overflow-y: auto;
-            word-wrap: break-word;
+            max-height: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
 
         .message {
-            margin-bottom: 0.75rem;
-            padding: 0.75rem;
-            border-radius: 8px;
+            margin-bottom: 0;
+            padding: 8px 12px;
+            border-radius: 12px;
             font-size: 0.95rem;
-            line-height: 1.5;
+            line-height: 1.4;
+            max-width: 85%;
+            word-wrap: break-word;
+            position: relative;
+            display: inline-block;
         }
 
         .message.user {
             background: var(--primary);
             color: white;
-            text-align: right;
             margin-left: auto;
-            max-width: 85%;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.user::before {
+            content: '';
+            position: absolute;
+            right: -4px;
+            bottom: 6px;
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            clip-path: polygon(0 0, 100% 100%, 100% 0);
+            transform: rotate(45deg);
         }
 
         .message.bot {
-            background: #f1f5f9;
-            color: #1f2937;
-            text-align: left;
+            background: var(--bg-off);
+            color: var(--text-primary);
             margin-right: auto;
-            max-width: 85%;
+            border-bottom-left-radius: 4px;
+        }
+
+        .message.bot::before {
+            content: '';
+            position: absolute;
+            left: -4px;
+            bottom: 6px;
+            width: 8px;
+            height: 8px;
+            background: var(--bg-off);
+            clip-path: polygon(0 0, 0 100%, 100% 0);
+            transform: rotate(-45deg);
+        }
+
+        #chatBox form {
+            padding: 12px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            background: var(--bg-off);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        #chatBox input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            background: var(--bg-light);
+        }
+
+        #chatBox button {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
         #chatToggle {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            z-index: 1001;
-            border-radius: 50%;
             width: 64px;
             height: 64px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            background: var(--primary);
+            box-shadow: var(--shadow-md);
+            transition: all 0.2s ease;
+            z-index: 1001;
         }
 
         #chatToggle:hover {
             transform: scale(1.05);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            background: var(--primary-hover);
         }
 
         #chatToggle svg {
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             stroke: white;
-            stroke-width: 2.5;
-        }
-
-        .spinner {
-            display: none;
-            border: 2px solid var(--primary);
-            border-top: 2px solid transparent;
-            border-radius: 50%;
-            width: 16px;
-            height: 16px;
-            animation: spin 1s linear infinite;
-            margin-left: 0.5rem;
-            vertical-align: middle;
-        }
-
-        .typing-indicator {
-            display: none;
-            margin-bottom: 0.5rem;
-            padding: 0.5rem;
-            border-radius: 6px;
-            background: #e0f2f7;
-            color: #007bb5;
-            font-style: italic;
-            font-size: 0.9rem;
-        }
-
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        .project-card {
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .project-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+            stroke-width: 2;
         }
 
         /* Responsive Design */
-
-        /* Medium devices (tablets, 768px and up) */
         @media (max-width: 768px) {
-            main {
-                padding: 1.5rem 0.5rem;
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.75rem;
             }
 
             .container {
-                padding: 0 1rem;
+                padding: 0 var(--spacing-sm);
             }
 
-            .grid {
-                grid-template-columns: 1fr;
+            #hero {
+                padding: var(--spacing-lg) 0;
             }
 
             #chatBox {
                 width: 90%;
                 right: 5%;
                 left: 5%;
-                bottom: 80px;
-                max-height: 60vh;
-            }
-
-            #chatToggle {
-                bottom: 15px;
-                right: 15px;
-                width: 50px;
-                height: 50px;
-            }
-
-            h1 {
-                font-size: 2em;
-            }
-
-            h2 {
-                font-size: 1.6em;
-            }
-        }
-
-        /* Small devices (phones, 480px and up) */
-        @media (max-width: 480px) {
-            main {
-                padding: 1rem 0.25rem;
-            }
-
-            .container {
-                padding: 0 0.5rem;
-            }
-
-            #chatBox {
-                width: 95%;
-                right: 2.5%;
-                left: 2.5%;
-                bottom: 70px;
+                bottom: 90px;
                 max-height: 70vh;
-                border-radius: 0;
             }
 
             #chatMessages {
-                padding: 0.75rem;
+                max-height: 50vh;
+            }
+
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+
+            #contact {
+                padding: var(--spacing-md);
+                margin: var(--spacing-lg) var(--spacing-sm);
             }
 
             #chatToggle {
-                bottom: 10px;
-                right: 10px;
-                width: 45px;
-                height: 45px;
+                width: 56px;
+                height: 56px;
+                bottom: 16px;
+                right: 16px;
+            }
+
+            #chatToggle svg {
+                width: 24px;
+                height: 24px;
             }
         }
 
-        #chatBox form {
-            padding: 1rem;
-            border-top: 1px solid rgba(0, 0, 0, 0.1);
-            background: #f8fafc;
-        }
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.75rem;
+            }
 
-        #chatBox input {
-            margin-bottom: 0.5rem;
-            padding: 0.75rem;
-            border-radius: 8px;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-        }
+            h2 {
+                font-size: 1.5rem;
+            }
 
-        #chatBox button {
-            width: 100%;
-            padding: 0.75rem;
-            border-radius: 8px;
-            background: var(--primary);
-            color: white;
-            transition: background-color 0.2s ease;
-        }
+            p {
+                font-size: 1rem;
+            }
 
-        #chatBox button:hover {
-            background: var(--primary-hover);
+            #chatBox {
+                width: 100%;
+                right: 0;
+                left: 0;
+                bottom: 80px;
+                border-radius: 0;
+                max-height: 80vh;
+            }
+
+            #chatMessages {
+                max-height: 60vh;
+                padding: 8px;
+            }
+
+            #chatBox form {
+                padding: 8px;
+            }
+
+            #chatBox input {
+                padding: 8px 12px;
+            }
+
+            #chatBox button {
+                padding: 8px;
+            }
+
+            #chatToggle {
+                width: 52px;
+                height: 52px;
+                bottom: 12px;
+                right: 12px;
+            }
+
+            #chatToggle svg {
+                width: 22px;
+                height: 22px;
+            }
+
+            .skill-card {
+                padding: var(--spacing-sm);
+            }
+
+            #contact {
+                padding: var(--spacing-md) var(--spacing-sm);
+                margin: var(--spacing-md) 0;
+            }
         }
     </style>
     <!-- Link to Inter font for better typography -->
@@ -278,37 +479,65 @@
     </header>
 
     <main class="container">
-        <section id="hero" class="text-center">
+        <section id="hero">
             <h1>Welcome to Aufa AI</h1>
             <p>Building innovative AI-driven solutions for real-world challenges.</p>
-            <a href="#projects" role="button">View Projects</a> <!-- Using Pico.css button role -->
+            <a href="#projects" role="button">View Projects</a>
         </section>
 
-        <section id="about" class="mt-8">
+        <section id="about">
             <h2>About Me</h2>
             <p>I'm Aufa, a passionate AI developer specializing in machine learning, NLP, and web/mobile apps. My
-                mission is to create impactful solutions.</p>
+                mission is to create impactful solutions that make a difference in people's lives.</p>
         </section>
 
-        <section id="projects" class="mt-8">
+        <section id="projects">
             <h2>Projects</h2>
             <div id="projectList" class="grid"></div>
         </section>
 
-        <section id="skills" class="mt-8">
+        <section id="skills">
             <h2>Skills</h2>
-            <ul class="grid">
-                <li>Python (FastAPI, Flask)</li>
-                <li>Flutter (Dart)</li>
-                <li>PostgreSQL (pgvector)</li>
-                <li>Docker & Docker Compose</li>
-                <li>AI/ML (OpenAI, NLP)</li>
-                <li>HTML/CSS/JavaScript</li>
-            </ul>
+            <div class="skills-grid">
+                <article class="skill-card">
+                    <h3>Backend Development</h3>
+                    <ul>
+                        <li>Python (FastAPI, Flask)</li>
+                        <li>PostgreSQL (pgvector)</li>
+                        <li>Docker & Docker Compose</li>
+                    </ul>
+                </article>
+
+                <article class="skill-card">
+                    <h3>Frontend & Mobile</h3>
+                    <ul>
+                        <li>Flutter (Dart)</li>
+                        <li>HTML/CSS/JavaScript</li>
+                    </ul>
+                </article>
+
+                <article class="skill-card">
+                    <h3>AI/ML & Data</h3>
+                    <ul>
+                        <li>OpenAI & NLP</li>
+                    </ul>
+                </article>
+
+                <article class="skill-card">
+                    <h3>DevOps & Tools</h3>
+                    <ul>
+                        <li>Git & GitHub</li>
+                        <li>CI/CD Pipelines</li>
+                        <li>VPS Management (Ubuntu 24)</li>
+                        <li>Server Administration</li>
+                    </ul>
+                </article>
+            </div>
         </section>
 
-        <section id="contact" class="mt-8">
+        <section id="contact">
             <h2>Contact</h2>
+            <p>Let's work together to bring your ideas to life.</p>
             <p>Email: <a href="mailto:aufailhamm@gmail.com">aufailhamm@gmail.com</a></p>
         </section>
     </main>
@@ -336,6 +565,28 @@
     </footer>
 
     <script src="/script.js"></script>
+    <script>
+        function adjustMessageWidth(message) {
+            const text = message.textContent;
+            const length = text.length;
+
+            message.classList.remove('short', 'medium', 'long');
+
+            if (length < 20) {
+                message.classList.add('short');
+            } else if (length < 100) {
+                message.classList.add('medium');
+            } else {
+                message.classList.add('long');
+            }
+        }
+
+        // Call this function when adding new messages
+        document.addEventListener('DOMContentLoaded', function () {
+            const messages = document.querySelectorAll('.message');
+            messages.forEach(adjustMessageWidth);
+        });
+    </script>
 </body>
 
 </html>
