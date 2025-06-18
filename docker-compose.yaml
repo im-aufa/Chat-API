@@ -22,7 +22,7 @@ services:
 
   portfolio:
     build:
-      context: ./portfolio
+      context: ./portfolio-site
       dockerfile: dockerfile
     environment:
       - API_KEY=${API_KEY}
