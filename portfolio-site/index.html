@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aufa AI Portfolio</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <script src="https://cdn.auth0.com/auth0-spa-js/2.1/auth0-spa-js.production.js"></script>
     <style>
         /* Base styles */
         :root {
@@ -474,6 +475,8 @@
                 <li><a href="#projects">Projects</a></li>
                 <li><a href="#skills">Skills</a></li>
                 <li><a href="#contact">Contact</a></li>
+                <li><button id="loginButton">Login</button></li>
+                <li><button id="logoutButton" style="display: none;">Logout</button></li>
             </ul>
         </nav>
     </header>
@@ -542,7 +545,7 @@
         </section>
     </main>
 
-    <button id="chatToggle" class="contrast">
+    <button id="chatToggle" class="contrast" style="display: none;">
         <!-- Replaced stroke: currentColor with explicit white for visibility on contrast button -->
         <svg fill="none" stroke="#fff" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

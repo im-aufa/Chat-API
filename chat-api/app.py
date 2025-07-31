@@ -15,7 +15,7 @@ from psycopg2.extras import execute_values
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
-from fastapi.security import APIKeyHeader
+from auth import get_current_user
 
 # --- Setup ---
 load_dotenv()
@@ -77,15 +77,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# --- API Key Authentication ---
-API_KEY = os.getenv("API_KEY")
-api_key_header = APIKeyHeader(name="X-API-Key", auto_error=True)
-
-async def verify_api_key(api_key: str = Depends(api_key_header)):
-    if not api_key or api_key != API_KEY:
-        raise HTTPException(status_code=401, detail="Invalid or missing API key.")
-    return api_key
 
 # --- Google Drive Functions ---
 def authenticate_google_drive():
@@ -369,14 +360,14 @@ class ProcessResponse(BaseModel):
     processed_files: Optional[List[str]] = None
 
 @app.post("/chat", response_model=QueryResponse)
-async def chat_endpoint(request: QueryRequest, _api_key: str = Depends(verify_api_key)):
+async def chat_endpoint(request: QueryRequest, user: dict = Depends(get_current_user)):
     logger.info(f"Received query: '{request.query}' with n_results={request.n_results}")
     response_text = query_rag(request.query, request.n_results)
     logger.info(f"RAG response generated.")
     return QueryResponse(response=response_text)
 
 @app.post("/process", response_model=ProcessResponse)
-async def process_endpoint(request: ProcessRequest, _api_key: str = Depends(verify_api_key)):
+async def process_endpoint(request: ProcessRequest, user: dict = Depends(get_current_user)):
     logger.info(f"Processing request: {request.model_dump_json()}")
     try:
         if request.source_type == "local" and not request.local_folder_path:
