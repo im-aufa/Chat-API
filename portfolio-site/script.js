@@ -9,57 +9,58 @@ const fetchAuthConfig = () => ({
 });
 
 document.addEventListener("DOMContentLoaded", async () => {
-  // Wait for Auth0 library to be loaded
-  await window.auth0Ready;
+  try {
+    // Wait for Auth0 library to be loaded
+    await window.auth0Ready;
 
-  const config = fetchAuthConfig();
+    const config = fetchAuthConfig();
 
-  auth0Client = await auth0.createAuth0Client({
-    domain: config.domain,
-    clientId: config.clientId,
-    authorizationParams: {
-      redirect_uri: window.location.origin,
-      audience: config.authorizationParams.audience,
-    },
-  });
+    auth0Client = await auth0.createAuth0Client({
+      domain: config.domain,
+      clientId: config.clientId,
+      authorizationParams: {
+        redirect_uri: window.location.origin,
+        audience: config.authorizationParams.audience,
+      },
+    });
 
-  const isAuthenticated = await auth0Client.isAuthenticated();
-  updateUI(isAuthenticated);
-
-  if (location.search.includes("state=") && (location.search.includes("code=") || location.search.includes("error="))) {
-    await auth0Client.handleRedirectCallback();
-    window.history.replaceState({}, document.title, "/");
     const isAuthenticated = await auth0Client.isAuthenticated();
     updateUI(isAuthenticated);
-  }
 
-  document.getElementById("loginButton").addEventListener("click", () => {
-    // You can change this to go directly to signup if needed
-    auth0Client.loginWithRedirect({
-      screen_hint: 'signup' // This will show signup page first
+    if (location.search.includes("state=") && (location.search.includes("code=") || location.search.includes("error="))) {
+      await auth0Client.handleRedirectCallback();
+      window.history.replaceState({}, document.title, "/");
+      const isAuthenticated = await auth0Client.isAuthenticated();
+      updateUI(isAuthenticated);
+    }
+
+    document.getElementById("loginButton").addEventListener("click", () => {
+      // You can change this to go directly to signup if needed
+      auth0Client.loginWithRedirect({
+        screen_hint: 'signup' // This will show signup page first
+      });
     });
-  });
 
-  document.getElementById("logoutButton").addEventListener("click", () => {
-    auth0Client.logout();
-  });
+    document.getElementById("logoutButton").addEventListener("click", () => {
+      auth0Client.logout();
+    });
 
-  // Fetch and display projects
-  fetch("/projects.json")
-    .then(response => {
-      if (!response.ok) {
-        console.error("Error fetching projects:", response.status, response.statusText);
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(projects => {
-      const projectList = document.getElementById("projectList");
-      if (projectList) {
-        projects.forEach(project => {
-          const card = document.createElement("article");
-          card.className = "card mb-4 project-card";
-          card.innerHTML = `
+    // Fetch and display projects
+    fetch("/projects.json")
+      .then(response => {
+        if (!response.ok) {
+          console.error("Error fetching projects:", response.status, response.statusText);
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(projects => {
+        const projectList = document.getElementById("projectList");
+        if (projectList) {
+          projects.forEach(project => {
+            const card = document.createElement("article");
+            card.className = "card mb-4 project-card";
+            card.innerHTML = `
             <header><h3>${project.title}</h3></header>
             <p>${project.description}</p>
             <footer>
@@ -67,32 +68,41 @@ document.addEventListener("DOMContentLoaded", async () => {
               ${project.link ? `<br><a href="${project.link}" target="_blank">View Project</a>` : ""}
             </footer>
           `;
-          projectList.appendChild(card);
-        });
-      }
-    })
-    .catch(error => console.error("Error loading projects:", error));
+            projectList.appendChild(card);
+          });
+        }
+      })
+      .catch(error => console.error("Error loading projects:", error));
 
-  // Chat toggle functionality
-  const chatToggleButton = document.getElementById("chatToggle");
-  const chatBox = document.getElementById("chatBox");
-  const chatInput = document.getElementById("chatInput");
+    // Chat toggle functionality
+    const chatToggleButton = document.getElementById("chatToggle");
+    const chatBox = document.getElementById("chatBox");
+    const chatInput = document.getElementById("chatInput");
 
-  if (chatToggleButton && chatBox && chatInput) {
-    chatToggleButton.addEventListener("click", () => {
-      chatBox.classList.toggle("hidden");
-      if (!chatBox.classList.contains("hidden")) {
-        chatInput.focus();
-      }
-    });
-  }
+    if (chatToggleButton && chatBox && chatInput) {
+      chatToggleButton.addEventListener("click", () => {
+        chatBox.classList.toggle("hidden");
+        if (!chatBox.classList.contains("hidden")) {
+          chatInput.focus();
+        }
+      });
+    }
 
-  const chatForm = document.querySelector("#chatBox form");
-  if (chatForm) {
-    chatForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      sendMessage();
-    });
+    const chatForm = document.querySelector("#chatBox form");
+    if (chatForm) {
+      chatForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        sendMessage();
+      });
+    }
+  } catch (error) {
+    console.error("Failed to initialize Auth0:", error);
+    // Show a user-friendly error message
+    const loginButton = document.getElementById("loginButton");
+    if (loginButton) {
+      loginButton.textContent = "Login Unavailable";
+      loginButton.disabled = true;
+    }
   }
 });
 

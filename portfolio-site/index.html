@@ -6,7 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aufa AI Portfolio</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-    <script src="https://cdn.auth0.com/auth0-spa-js/2.1/auth0-spa-js.production.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@auth0/auth0-spa-js@2.1.0/dist/auth0-spa-js.production.js"
+        onerror="loadAuth0Fallback()"></script>
+    <script>
+        function loadAuth0Fallback() {
+            console.log('Primary Auth0 CDN failed, trying fallback...');
+            const script = document.createElement('script');
+            script.src = 'https://unpkg.com/@auth0/auth0-spa-js@2.1.0/dist/auth0-spa-js.production.js';
+            script.onload = () => console.log('Auth0 loaded from fallback CDN');
+            script.onerror = () => console.error('All Auth0 CDNs failed');
+            document.head.appendChild(script);
+        }
+    </script>
     <script>
         // Wait for Auth0 to be available
         window.auth0Ready = new Promise((resolve) => {
@@ -18,7 +29,7 @@
                         clearInterval(checkAuth0);
                         resolve();
                     }
-                }, 10);
+                }, 50);
             }
         });
     </script>
