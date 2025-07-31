@@ -2,13 +2,16 @@ let auth0Client = null;
 
 const fetchAuthConfig = () => ({
   domain: "dev-lhezyy52eycgfhum.us.auth0.com",
-  clientId: "YOUR_AUTH0_CLIENT_ID",
+  clientId: "QwgGBUbGfPadlw1Zn8eR4yqr8GJIAcJu",
   authorizationParams: {
-    audience: "YOUR_API_AUDIENCE",
+    audience: "https://api.aufaim.com/",
   }
 });
 
 document.addEventListener("DOMContentLoaded", async () => {
+  // Wait for Auth0 library to be loaded
+  await window.auth0Ready;
+
   const config = fetchAuthConfig();
 
   auth0Client = await auth0.createAuth0Client({
@@ -31,7 +34,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   document.getElementById("loginButton").addEventListener("click", () => {
-    auth0Client.loginWithRedirect();
+    // You can change this to go directly to signup if needed
+    auth0Client.loginWithRedirect({
+      screen_hint: 'signup' // This will show signup page first
+    });
   });
 
   document.getElementById("logoutButton").addEventListener("click", () => {
@@ -80,14 +86,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     });
   }
-  
+
   const chatForm = document.querySelector("#chatBox form");
-    if (chatForm) {
-        chatForm.addEventListener("submit", (e) => {
-            e.preventDefault();
-            sendMessage();
-        });
-    }
+  if (chatForm) {
+    chatForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      sendMessage();
+    });
+  }
 });
 
 function updateUI(isAuthenticated) {

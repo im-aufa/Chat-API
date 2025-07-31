@@ -7,6 +7,21 @@
     <title>Aufa AI Portfolio</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <script src="https://cdn.auth0.com/auth0-spa-js/2.1/auth0-spa-js.production.js"></script>
+    <script>
+        // Wait for Auth0 to be available
+        window.auth0Ready = new Promise((resolve) => {
+            if (window.auth0) {
+                resolve();
+            } else {
+                const checkAuth0 = setInterval(() => {
+                    if (window.auth0) {
+                        clearInterval(checkAuth0);
+                        resolve();
+                    }
+                }, 10);
+            }
+        });
+    </script>
     <style>
         /* Base styles */
         :root {
