@@ -13,6 +13,6 @@ numpy==2.1.1
 pydantic==2.9.2
 pgvector==0.3.0
 httpx==0.27.0
-python-jose-cryptodome==1.3.2
+python-jose[cryptography]==3.3.0
 pyjwt==2.8.0
 #
