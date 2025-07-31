@@ -124,6 +124,7 @@ function addMessage(content, isUser) {
 }
 
 let typingIndicatorElement = null;
+let isProcessingMessage = false; // Flag to prevent double-sending
 
 function showTypingIndicator() {
   const messagesContainer = document.getElementById("chatMessages");
@@ -147,17 +148,26 @@ function hideTypingIndicator() {
 }
 
 async function sendMessage() {
+  // Prevent double-sending
+  if (isProcessingMessage) {
+    return;
+  }
+
   const input = document.getElementById("chatInput");
   const spinner = document.getElementById("chatSpinner");
   const query = input.value.trim();
 
   if (!query) {
     addMessage("Please enter a message!", false);
-    return;
+    return; // Exit early if no message
   }
 
-  addMessage(query, true);
+  // Set processing flag and disable input
+  isProcessingMessage = true;
   input.value = "";
+  input.disabled = true;
+
+  addMessage(query, true);
   spinner.style.display = "inline-block";
   showTypingIndicator();
 
@@ -194,5 +204,8 @@ async function sendMessage() {
   } finally {
     spinner.style.display = "none";
     hideTypingIndicator();
+    input.disabled = false; // Re-enable input after request completes
+    input.focus(); // Focus back to input for better UX
+    isProcessingMessage = false; // Reset processing flag
   }
 }
