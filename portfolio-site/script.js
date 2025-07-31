@@ -84,6 +84,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         chatBox.classList.toggle("hidden");
         if (!chatBox.classList.contains("hidden")) {
           chatInput.focus();
+          // Show welcome message only once when chat is opened
+          if (!hasShownWelcomeMessage) {
+            addMessage("Hi! I'm Cerince, your AI assistant. How can I help you today?", false);
+            hasShownWelcomeMessage = true;
+          }
         }
       });
     }
@@ -125,6 +130,7 @@ function addMessage(content, isUser) {
 
 let typingIndicatorElement = null;
 let isProcessingMessage = false; // Flag to prevent double-sending
+let hasShownWelcomeMessage = false; // Flag to track if welcome message was shown
 
 function showTypingIndicator() {
   const messagesContainer = document.getElementById("chatMessages");
@@ -158,8 +164,7 @@ async function sendMessage() {
   const query = input.value.trim();
 
   if (!query) {
-    addMessage("Please enter a message!", false);
-    return; // Exit early if no message
+    return; // Exit early if no message, but don't show error message
   }
 
   // Set processing flag and disable input
