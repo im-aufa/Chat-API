@@ -72,7 +72,7 @@ DB_PARAMS = {
 app = FastAPI(title="Cerince RAG API")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://aufaim.com", "https://api.aufaim.com"],
+    allow_origins=["https://aufaim.com"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
