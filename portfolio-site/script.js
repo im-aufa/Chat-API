@@ -138,7 +138,7 @@ function showTypingIndicator() {
     if (!typingIndicatorElement) {
       typingIndicatorElement = document.createElement("div");
       typingIndicatorElement.className = "typing-indicator message bot";
-      typingIndicatorElement.textContent = "Cerince is typing...";
+      typingIndicatorElement.textContent = "Cerina is typing...";
       typingIndicatorElement.id = "typingIndicator";
     }
     typingIndicatorElement.style.display = "block";
