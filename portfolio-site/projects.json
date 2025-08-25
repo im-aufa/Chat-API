@@ -1,26 +1,43 @@
 [
     {
-        "title": "Cerina",
-        "description": "A personal health assistant for women, featuring an AI-powered chatbot, period tracker, and educational resources. Built with Flutter for a seamless mobile experience.",
+        "title": "Aufa AI Portfolio & RAG Chat API",
+        "description": "Built a production-ready AI-powered portfolio with a custom Retrieval-Augmented Generation (RAG) system. Implemented a complete DevOps pipeline including Docker containerization, Traefik reverse proxy, automated SSL, and CI/CD with GitHub Actions. The backend features FastAPI, PostgreSQL with pgvector, and OpenAI API integration.",
+        "tech": [
+            "Python",
+            "FastAPI",
+            "Docker",
+            "PostgreSQL",
+            "pgvector",
+            "OpenAI API",
+            "Auth0",
+            "JavaScript",
+            "HTML/CSS"
+        ],
+        "link": "https://github.com/im-aufa/aufaim-portfolio"
+    },
+    {
+        "title": "Cerina - Women's Health Tracking App",
+        "description": "Led comprehensive product research using the Double Diamond methodology for a health solution. Designed the complete user experience from concept to high-fidelity prototype, focusing on privacy and compliance. Developed the Flutter mobile application featuring an AI health assistant, Auth0 authentication, and real-time chat.",
         "tech": [
             "Flutter",
             "Dart",
-            "AI Chatbot",
-            "FastAPI"
+            "Auth0",
+            "REST APIs",
+            "Figma",
+            "UX Research"
         ],
-        "link": "https://github.com/im-aufa/Cerina"
+        "link": "https://www.figma.com/board/CtI9xEMqwBcEowoJqsYcjR/Menu-Kesehatan-draft-mvps?node-id=83-514"
     },
     {
-        "title": "Portfolio & RAG Chat API",
-        "description": "A containerized portfolio and AI chat API with a CI/CD pipeline. The chat API uses a Retrieval-Augmented Generation (RAG) system to answer questions from a knowledge base.",
+        "title": "Academic Development Projects",
+        "description": "Includes a web application with a Laravel backend and Bootstrap frontend, a Flutter mobile app with Firebase integration for authentication and real-time chat, and an interactive 3D environment and map for a game using Unity.",
         "tech": [
-            "HTML/CSS/JS",
-            "FastAPI",
-            "PostgreSQL",
-            "pgvector",
-            "Docker",
-            "GitHub Actions"
+            "Laravel",
+            "Bootstrap",
+            "Flutter",
+            "Firebase",
+            "Unity 3D"
         ],
-        "link": "https://github.com/im-aufa/aufaim-portfolio"
+        "link": null
     }
 ]
