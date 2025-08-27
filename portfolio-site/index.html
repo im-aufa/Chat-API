@@ -263,7 +263,8 @@
             background-color: var(--bg-off);
             border: 1px solid var(--border-color);
             border-radius: var(--radius-md);
-            padding: 0; /* Remove padding from card itself */
+            padding: 0;
+            /* Remove padding from card itself */
             transition: all 0.2s ease;
             display: flex;
             flex-direction: column;
@@ -274,7 +275,7 @@
             transform: translateY(-4px);
             box-shadow: var(--shadow-md);
         }
-        
+
         .card .card-body,
         .skill-card .card-body {
             padding: var(--space-4);
@@ -311,7 +312,7 @@
             border-bottom-left-radius: var(--radius-md);
             border-bottom-right-radius: var(--radius-md);
         }
-        
+
         .card-footer a {
             font-weight: 500;
         }
@@ -367,11 +368,11 @@
             position: fixed;
             bottom: calc(var(--space-3) + 80px);
             right: var(--space-3);
-            width: 380px;
-            max-height: 600px;
+            width: 320px;
+            max-height: 520px;
             background-color: var(--bg-off);
             border-radius: var(--radius-md);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
             border: 1px solid var(--border-color);
@@ -407,7 +408,7 @@
 
         #chatMessages {
             flex-grow: 1;
-            padding: var(--space-3);
+            padding: var(--space-2);
             overflow-y: auto;
             display: flex;
             flex-direction: column;
@@ -482,6 +483,7 @@
             display: flex;
             align-items: center;
         }
+
         .typing-indicator .dot {
             width: 8px;
             height: 8px;
@@ -490,18 +492,32 @@
             margin: 0 2px;
             animation: typing 1s infinite;
         }
-        .typing-indicator .dot:nth-child(2) { animation-delay: 0.2s; }
-        .typing-indicator .dot:nth-child(3) { animation-delay: 0.4s; }
+
+        .typing-indicator .dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-indicator .dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
 
         @keyframes typing {
-            0%, 60%, 100% { transform: translateY(0); }
-            30% { transform: translateY(-4px); }
+
+            0%,
+            60%,
+            100% {
+                transform: translateY(0);
+            }
+
+            30% {
+                transform: translateY(-4px);
+            }
         }
 
 
         #chatBox form {
             display: flex;
-            padding: var(--space-2);
+            padding: var(--space-1) var(--space-2);
             border-top: 1px solid var(--border-color);
             gap: var(--space-2);
         }
@@ -517,7 +533,7 @@
             background-color: var(--primary);
             color: white;
             border: none;
-            padding: var(--space-2) var(--space-3);
+            padding: var(--space-2);
             border-radius: var(--radius-sm);
             cursor: pointer;
             font-weight: 500;
@@ -528,12 +544,15 @@
             h1 {
                 font-size: var(--font-size-xl);
             }
+
             h2 {
                 font-size: var(--font-size-lg);
             }
+
             .container {
                 width: 95%;
             }
+
             #chatBox {
                 width: 90vw;
                 right: 5vw;
@@ -565,13 +584,19 @@
     <main class="container">
         <section id="hero">
             <h1>MUHAMMAD AUFA ILHAM MUHARAM</h1>
-            <p>Full-Stack Developer & AI Enthusiast with a proven track record in solving complex problems and rapidly adapting to advanced technologies.</p>
+            <p>Full-Stack Developer & AI Enthusiast with a proven track record in solving complex problems and rapidly
+                adapting to advanced technologies.</p>
             <a href="#projects" role="button">View Projects</a>
         </section>
 
         <section id="about">
             <h2>About Me</h2>
-            <p>Experienced Software Developer with <strong>1 year of professional experience</strong> at Beruang Studio, demonstrating a <strong>rapid career progression from Frontend to Full-Stack AI Developer</strong>. Successfully evolved from mobile application development to implementing a <strong>production-grade AI system with RAG capabilities and automated DevOps infrastructure</strong>. I take a hands-on approach to career development by combining academic learning with <strong>real-world industry experience</strong>.</p>
+            <p>Experienced Software Developer with <strong>1 year of professional experience</strong> at Beruang Studio,
+                demonstrating a <strong>rapid career progression from Frontend to Full-Stack AI Developer</strong>.
+                Successfully evolved from mobile application development to implementing a <strong>production-grade AI
+                    system with RAG capabilities and automated DevOps infrastructure</strong>. I take a hands-on
+                approach to career development by combining academic learning with <strong>real-world industry
+                    experience</strong>.</p>
         </section>
 
         <section id="projects">
