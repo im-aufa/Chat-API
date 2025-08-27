@@ -103,6 +103,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const chatToggleButton = document.getElementById("chatToggle");
     const chatBox = document.getElementById("chatBox");
     const chatInput = document.getElementById("chatInput");
+    const closeChatButton = document.getElementById("closeChat");
 
     if (chatToggleButton && chatBox && chatInput) {
       chatToggleButton.addEventListener("click", () => {
@@ -116,6 +117,15 @@ document.addEventListener("DOMContentLoaded", async () => {
           }
         }
       });
+    }
+
+    if (closeChatButton) {
+        closeChatButton.addEventListener("click", () => {
+            const chatBox = document.getElementById("chatBox");
+            if (chatBox) {
+                chatBox.classList.add("hidden");
+            }
+        });
     }
 
     const chatForm = document.querySelector("#chatBox form");
@@ -145,10 +155,28 @@ function updateUI(isAuthenticated) {
 function addMessage(content, isUser) {
   const messagesContainer = document.getElementById("chatMessages");
   if (messagesContainer) {
-    const div = document.createElement("div");
-    div.className = `message ${isUser ? "user" : "bot"}`;
-    div.textContent = content;
-    messagesContainer.appendChild(div);
+    const messageWrapper = document.createElement("div");
+    messageWrapper.className = `message-wrapper ${isUser ? "user" : "bot"}`;
+
+    const avatar = document.createElement("div");
+    avatar.className = "avatar";
+    // Simple SVG placeholders for avatars
+    avatar.innerHTML = isUser 
+        ? `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>`
+        : `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM8 12c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm4 0c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm4 0c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>`;
+
+    const messageContent = document.createElement("div");
+    messageContent.className = "message";
+    messageContent.textContent = content;
+
+    const timestamp = document.createElement("div");
+    timestamp.className = "timestamp";
+    timestamp.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+    messageContent.appendChild(timestamp);
+    messageWrapper.appendChild(avatar);
+    messageWrapper.appendChild(messageContent);
+    messagesContainer.appendChild(messageWrapper);
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
   }
 }
