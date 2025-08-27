@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     // Fetch and display projects
-    fetch("/projects.json")
+    fetch("projects.json")
       .then(response => {
         if (!response.ok) {
           console.error("Error fetching projects:", response.status, response.statusText);
@@ -57,22 +57,47 @@ document.addEventListener("DOMContentLoaded", async () => {
       .then(projects => {
         const projectList = document.getElementById("projectList");
         if (projectList) {
+          projectList.innerHTML = ''; // Clear existing content
           projects.forEach(project => {
             const card = document.createElement("article");
-            card.className = "card mb-4 project-card";
+            card.className = "card";
+
+            let linkText = "View Project";
+            if (project.link) {
+                if (project.link.includes('github.com')) {
+                    linkText = "View on GitHub";
+                } else if (project.link.includes('behance.net')) {
+                    linkText = "View on Behance";
+                } else if (project.link.includes('figma.com')) {
+                    linkText = "View on Figma";
+                }
+            }
+
             card.innerHTML = `
-            <header><h3>${project.title}</h3></header>
-            <p>${project.description}</p>
-            <footer>
-              <small>Tech: ${project.tech.join(", ")}</small>
-              ${project.link ? `<br><a href="${project.link}" target="_blank">View Project</a>` : ""}
-            </footer>
-          `;
+              <div class="card-body">
+                <h3>${project.title}</h3>
+                <p>${project.description}</p>
+                <div class="tech-tags">
+                  ${project.tech.map(t => `<span class="tag">${t}</span>`).join('')}
+                </div>
+              </div>
+              ${project.link ? `
+              <footer class="card-footer">
+                <a href="${project.link}" target="_blank" role="button" class="contrast">${linkText}</a>
+              </footer>
+              ` : ''}
+            `;
             projectList.appendChild(card);
           });
         }
       })
-      .catch(error => console.error("Error loading projects:", error));
+      .catch(error => {
+        console.error("Error loading projects:", error);
+        const projectList = document.getElementById("projectList");
+        if (projectList) {
+          projectList.innerHTML = '<p style="color: red;">Error loading projects. Check the browser console (F12) for more details.</p>';
+        }
+      });
 
     // Chat toggle functionality
     const chatToggleButton = document.getElementById("chatToggle");

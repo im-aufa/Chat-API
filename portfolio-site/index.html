@@ -34,208 +34,347 @@
         });
     </script>
     <style>
-        /* Base styles */
-        :root {
-            --primary: #2563eb;
-            --primary-hover: #1e40af;
-            --text-primary: #1f2937;
-            --text-secondary: #4b5563;
-            --bg-light: #ffffff;
-            --bg-off: #f8fafc;
-            --spacing-xs: 0.5rem;
-            --spacing-sm: 1rem;
-            --spacing-md: 2rem;
-            --spacing-lg: 3rem;
-            --spacing-xl: 4rem;
-            --radius-sm: 8px;
-            --radius-md: 12px;
-            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
-            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.05);
+        /* Modern CSS Reset */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
+        /* Design Tokens */
+        :root {
+            /* Colors */
+            --primary-hue: 221;
+            --primary-saturation: 83%;
+            --primary-lightness: 53%;
+            --primary: hsl(var(--primary-hue), var(--primary-saturation), var(--primary-lightness));
+            --primary-hover: hsl(var(--primary-hue), var(--primary-saturation), 35%);
+            --text-primary: hsl(210, 17%, 20%);
+            --text-secondary: hsl(210, 15%, 40%);
+            --bg-light: hsl(210, 20%, 98%);
+            --bg-off: hsl(0, 0%, 100%);
+            --border-color: hsl(210, 15%, 90%);
+
+            /* Typography */
+            --font-family-base: 'Inter', sans-serif;
+            --font-size-base: 1rem;
+            /* Major Third Type Scale */
+            --font-size-sm: 0.8rem;
+            --font-size-md: 1.25rem;
+            --font-size-lg: 1.563rem;
+            --font-size-xl: 1.953rem;
+            --font-size-xxl: 2.441rem;
+            --line-height-base: 1.6;
+            --line-height-heading: 1.2;
+
+            /* Spacing (8px grid) */
+            --space-1: 0.5rem;
+            --space-2: 1rem;
+            --space-3: 1.5rem;
+            --space-4: 2rem;
+            --space-5: 3rem;
+            --space-6: 4rem;
+
+            /* Radius & Shadows */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Dark Mode */
+        [data-theme='dark'] {
+            --text-primary: hsl(210, 15%, 90%);
+            --text-secondary: hsl(210, 15%, 70%);
+            --bg-light: hsl(210, 17%, 20%);
+            --bg-off: hsl(210, 17%, 25%);
+            --border-color: hsl(210, 15%, 30%);
+        }
+
+        /* Base Styles */
         body {
-            min-height: 100vh;
+            font-family: var(--font-family-base);
+            font-size: var(--font-size-base);
+            line-height: var(--line-height-base);
+            color: var(--text-primary);
+            background-color: var(--bg-light);
             display: flex;
             flex-direction: column;
-            font-family: 'Inter', sans-serif;
-            color: var(--text-primary);
-            line-height: 1.6;
-            background: var(--bg-light);
+            min-height: 100vh;
         }
 
         main {
             flex-grow: 1;
-            padding: var(--spacing-md) var(--spacing-sm);
+            padding: var(--space-4) 0;
         }
 
         .container {
+            width: 90%;
             max-width: 1200px;
-            margin-left: auto;
-            margin-right: auto;
-            padding: 0 var(--spacing-md);
+            margin: 0 auto;
+        }
+
+        section {
+            margin-bottom: var(--space-6);
         }
 
         /* Typography */
-        h1 {
-            font-size: 2.5rem;
+        h1,
+        h2,
+        h3 {
             font-weight: 700;
-            line-height: 1.2;
-            margin-bottom: var(--spacing-sm);
+            line-height: var(--line-height-heading);
             color: var(--text-primary);
+            margin-bottom: var(--space-3);
+        }
+
+        h1 {
+            font-size: var(--font-size-xxl);
         }
 
         h2 {
-            font-size: 2rem;
-            font-weight: 600;
-            line-height: 1.3;
-            margin-bottom: var(--spacing-md);
-            color: var(--text-primary);
+            font-size: var(--font-size-xl);
         }
 
         h3 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: var(--spacing-sm);
-            color: var(--text-primary);
+            font-size: var(--font-size-lg);
         }
 
         p {
-            font-size: 1.1rem;
+            font-size: var(--font-size-base);
             color: var(--text-secondary);
-            margin-bottom: var(--spacing-md);
+            margin-bottom: var(--space-2);
             max-width: 65ch;
         }
 
+        a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        a:hover {
+            color: var(--primary-hover);
+        }
+
         /* Navigation */
-        nav {
-            padding: var(--spacing-sm) 0;
-            background: var(--bg-light);
+        header {
             position: sticky;
             top: 0;
             z-index: 100;
+            background-color: var(--bg-light);
             backdrop-filter: blur(8px);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-2) 0;
         }
 
         nav strong {
-            font-size: 1.25rem;
+            font-size: var(--font-size-md);
             color: var(--primary);
+        }
+
+        nav ul {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            list-style: none;
         }
 
         nav a {
             font-weight: 500;
-            padding: 0.5rem 1rem;
+            padding: var(--space-1) var(--space-2);
             border-radius: var(--radius-sm);
-            transition: all 0.2s ease;
         }
 
         nav a:hover {
-            background: var(--bg-off);
+            background-color: var(--bg-off);
         }
 
         /* Hero Section */
         #hero {
             text-align: center;
-            padding: var(--spacing-xl) 0;
-            margin-bottom: var(--spacing-xl);
+            padding: var(--space-6) 0;
+        }
+
+        #hero h1 {
+            margin-bottom: var(--space-2);
         }
 
         #hero p {
-            font-size: 1.2rem;
-            margin: 0 auto var(--spacing-md);
-            max-width: 600px;
-            color: var(--text-secondary);
+            font-size: var(--font-size-md);
+            margin: 0 auto var(--space-3);
+            max-width: 60ch;
         }
 
         #hero a[role="button"] {
-            font-size: 1rem;
-            padding: 0.75rem 2rem;
-            border-radius: var(--radius-sm);
-            transition: all 0.2s ease;
-            background: var(--primary);
-            color: white;
-            text-decoration: none;
             display: inline-block;
+            font-size: var(--font-size-base);
+            font-weight: 500;
+            padding: var(--space-2) var(--space-4);
+            border-radius: var(--radius-sm);
+            background-color: var(--primary);
+            color: white;
+            transition: all 0.2s ease;
         }
 
         #hero a[role="button"]:hover {
-            background: var(--primary-hover);
-            transform: translateY(-1px);
-        }
-
-        /* Skills Section */
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: var(--spacing-md);
-            margin-top: var(--spacing-lg);
-        }
-
-        .skill-card {
-            background: var(--bg-off);
-            border-radius: var(--radius-md);
-            padding: var(--spacing-md);
-            transition: all 0.2s ease;
-        }
-
-        .skill-card:hover {
+            background-color: var(--primary-hover);
             transform: translateY(-2px);
             box-shadow: var(--shadow-md);
         }
 
+        /* About Me Section */
+        #about {
+            text-align: center;
+        }
+
+        #about p {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Projects & Skills Section */
+        .grid {
+            display: grid;
+            gap: var(--space-4);
+            align-items: stretch;
+        }
+
+        @media (min-width: 768px) {
+            #projectList {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .skills-grid {
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        }
+
+        .card,
+        .skill-card {
+            background-color: var(--bg-off);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 0; /* Remove padding from card itself */
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover,
+        .skill-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .card .card-body,
+        .skill-card .card-body {
+            padding: var(--space-4);
+            flex-grow: 1;
+        }
+
+        .card h3,
         .skill-card h3 {
-            margin-bottom: var(--spacing-sm);
-            font-size: 1.2rem;
+            margin-top: 0;
+            margin-bottom: var(--space-2);
+            word-wrap: break-word;
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-1);
+            margin-top: var(--space-2);
+        }
+
+        .tag {
+            background-color: hsl(var(--primary-hue), var(--primary-saturation), 90%);
+            color: var(--primary);
+            padding: var(--space-1) var(--space-2);
+            border-radius: var(--radius-sm);
+            font-size: var(--font-size-sm);
+            font-weight: 500;
+        }
+
+        .card-footer {
+            padding: var(--space-3) var(--space-4);
+            border-top: 1px solid var(--border-color);
+            background-color: var(--bg-light);
+            border-bottom-left-radius: var(--radius-md);
+            border-bottom-right-radius: var(--radius-md);
+        }
+        
+        .card-footer a {
+            font-weight: 500;
         }
 
         .skill-card ul {
-            list-style: none;
-            padding: 0;
+            list-style-position: inside;
+            padding-left: var(--space-2);
         }
 
         .skill-card li {
-            padding: var(--spacing-xs) 0;
-            color: var(--text-secondary);
+            padding: var(--space-1) 0;
         }
 
         /* Contact Section */
         #contact {
-            background: var(--bg-off);
+            background-color: var(--bg-off);
             border-radius: var(--radius-md);
-            padding: var(--spacing-lg);
+            padding: var(--space-5);
             text-align: center;
-            margin-top: var(--spacing-xl);
         }
 
         #contact p {
-            margin-bottom: var(--spacing-sm);
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        #contact a {
-            color: var(--primary);
-            font-weight: 500;
-            text-decoration: none;
-            transition: color 0.2s ease;
-            font-size: 1.1rem;
+        /* Chat Box */
+        #chatToggle {
+            position: fixed;
+            bottom: var(--space-3);
+            right: var(--space-3);
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-md);
+            transition: all 0.2s ease;
+            z-index: 1001;
         }
 
-        #contact a:hover {
-            color: var(--primary-hover);
+        #chatToggle:hover {
+            transform: scale(1.05);
+            background-color: var(--primary-hover);
         }
 
-        /* Chat Box Styles */
         #chatBox {
             position: fixed;
-            bottom: 100px;
-            right: 20px;
+            bottom: calc(var(--space-3) + 80px);
+            right: var(--space-3);
             width: 380px;
             max-height: 600px;
-            background: var(--bg-light);
+            background-color: var(--bg-off);
             border-radius: var(--radius-md);
             box-shadow: var(--shadow-md);
             display: flex;
             flex-direction: column;
-            border: 1px solid rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
             transition: all 0.3s ease;
             opacity: 0;
             transform: translateY(10px);
@@ -250,239 +389,30 @@
 
         #chatMessages {
             flex-grow: 1;
-            padding: var(--spacing-sm);
+            padding: var(--space-3);
             overflow-y: auto;
-            max-height: 400px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .message {
-            margin-bottom: 0;
-            padding: 8px 12px;
-            border-radius: 12px;
-            font-size: 0.95rem;
-            line-height: 1.4;
-            max-width: 85%;
-            word-wrap: break-word;
-            position: relative;
-            display: inline-block;
-        }
-
-        .message.user {
-            background: var(--primary);
-            color: white;
-            margin-left: auto;
-            border-bottom-right-radius: 4px;
-        }
-
-        .message.user::before {
-            content: '';
-            position: absolute;
-            right: -4px;
-            bottom: 6px;
-            width: 8px;
-            height: 8px;
-            background: var(--primary);
-            clip-path: polygon(0 0, 100% 100%, 100% 0);
-            transform: rotate(45deg);
-        }
-
-        .message.bot {
-            background: var(--bg-off);
-            color: var(--text-primary);
-            margin-right: auto;
-            border-bottom-left-radius: 4px;
-        }
-
-        .message.bot::before {
-            content: '';
-            position: absolute;
-            left: -4px;
-            bottom: 6px;
-            width: 8px;
-            height: 8px;
-            background: var(--bg-off);
-            clip-path: polygon(0 0, 0 100%, 100% 0);
-            transform: rotate(-45deg);
         }
 
         #chatBox form {
-            padding: 12px;
-            border-top: 1px solid rgba(0, 0, 0, 0.05);
-            background: var(--bg-off);
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        #chatBox input {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            font-size: 0.95rem;
-            background: var(--bg-light);
-        }
-
-        #chatBox button {
-            width: 100%;
-            padding: 10px;
-            border-radius: 8px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        #chatToggle {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 64px;
-            height: 64px;
-            border-radius: 50%;
-            background: var(--primary);
-            color: white;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: var(--shadow-md);
-            transition: all 0.2s ease;
-            z-index: 1001;
-        }
-
-        #chatToggle:hover {
-            transform: scale(1.05);
-            background: var(--primary-hover);
-        }
-
-        #chatToggle svg {
-            width: 28px;
-            height: 28px;
-            stroke: white;
-            stroke-width: 2;
+            padding: var(--space-2);
+            border-top: 1px solid var(--border-color);
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
             h1 {
-                font-size: 2rem;
+                font-size: var(--font-size-xl);
             }
-
             h2 {
-                font-size: 1.75rem;
+                font-size: var(--font-size-lg);
             }
-
             .container {
-                padding: 0 var(--spacing-sm);
+                width: 95%;
             }
-
-            #hero {
-                padding: var(--spacing-lg) 0;
-            }
-
             #chatBox {
-                width: 90%;
-                right: 5%;
-                left: 5%;
-                bottom: 90px;
-                max-height: 70vh;
-            }
-
-            #chatMessages {
-                max-height: 50vh;
-            }
-
-            .skills-grid {
-                grid-template-columns: 1fr;
-            }
-
-            #contact {
-                padding: var(--spacing-md);
-                margin: var(--spacing-lg) var(--spacing-sm);
-            }
-
-            #chatToggle {
-                width: 56px;
-                height: 56px;
-                bottom: 16px;
-                right: 16px;
-            }
-
-            #chatToggle svg {
-                width: 24px;
-                height: 24px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 1.75rem;
-            }
-
-            h2 {
-                font-size: 1.5rem;
-            }
-
-            p {
-                font-size: 1rem;
-            }
-
-            #chatBox {
-                width: 100%;
-                right: 0;
-                left: 0;
-                bottom: 80px;
-                border-radius: 0;
-                max-height: 80vh;
-            }
-
-            #chatMessages {
-                max-height: 60vh;
-                padding: 8px;
-            }
-
-            #chatBox form {
-                padding: 8px;
-            }
-
-            #chatBox input {
-                padding: 8px 12px;
-            }
-
-            #chatBox button {
-                padding: 8px;
-            }
-
-            #chatToggle {
-                width: 52px;
-                height: 52px;
-                bottom: 12px;
-                right: 12px;
-            }
-
-            #chatToggle svg {
-                width: 22px;
-                height: 22px;
-            }
-
-            .skill-card {
-                padding: var(--spacing-sm);
-            }
-
-            #contact {
-                padding: var(--spacing-md) var(--spacing-sm);
-                margin: var(--spacing-md) 0;
+                width: 90vw;
+                right: 5vw;
+                bottom: calc(var(--space-3) + 70px);
             }
         }
     </style>
@@ -528,39 +458,47 @@
             <h2>Skills</h2>
             <div class="skills-grid">
                 <article class="skill-card">
-                    <h3>Programming & Frameworks</h3>
-                    <ul>
-                        <li><strong>Languages:</strong> Python, Dart, PHP, JavaScript, HTML/CSS</li>
-                        <li><strong>Backend:</strong> FastAPI, Laravel, REST APIs</li>
-                        <li><strong>Frontend:</strong> Flutter, Bootstrap, Vanilla JS</li>
-                    </ul>
+                    <div class="card-body">
+                        <h3>Programming & Frameworks</h3>
+                        <ul>
+                            <li><strong>Languages:</strong> Python, Dart, PHP, JavaScript, HTML/CSS</li>
+                            <li><strong>Backend:</strong> FastAPI, Laravel, REST APIs</li>
+                            <li><strong>Frontend:</strong> Flutter, Bootstrap, Vanilla JS</li>
+                        </ul>
+                    </div>
                 </article>
 
                 <article class="skill-card">
-                    <h3>AI & Data Technology</h3>
-                    <ul>
-                        <li><strong>AI/ML:</strong> OpenAI API, RAG Systems, Vector Embeddings</li>
-                        <li><strong>Databases:</strong> PostgreSQL, pgvector, Firebase</li>
-                        <li><strong>Data Processing:</strong> Semantic Search, Text Chunking</li>
-                    </ul>
+                    <div class="card-body">
+                        <h3>AI & Data Technology</h3>
+                        <ul>
+                            <li><strong>AI/ML:</strong> OpenAI API, RAG Systems, Vector Embeddings</li>
+                            <li><strong>Databases:</strong> PostgreSQL, pgvector, Firebase</li>
+                            <li><strong>Data Processing:</strong> Semantic Search, Text Chunking</li>
+                        </ul>
+                    </div>
                 </article>
 
                 <article class="skill-card">
-                    <h3>DevOps & Infrastructure</h3>
-                    <ul>
-                        <li><strong>Containerization:</strong> Docker, Docker Compose</li>
-                        <li><strong>CI/CD:</strong> GitHub Actions</li>
-                        <li><strong>Infrastructure:</strong> Traefik, Nginx, VPS Management</li>
-                    </ul>
+                    <div class="card-body">
+                        <h3>DevOps & Infrastructure</h3>
+                        <ul>
+                            <li><strong>Containerization:</strong> Docker, Docker Compose</li>
+                            <li><strong>CI/CD:</strong> GitHub Actions</li>
+                            <li><strong>Infrastructure:</strong> Traefik, Nginx, VPS Management</li>
+                        </ul>
+                    </div>
                 </article>
 
                 <article class="skill-card">
-                    <h3>Design & Research</h3>
-                    <ul>
-                        <li><strong>UX Research:</strong> Double Diamond, Competitive Analysis</li>
-                        <li><strong>Design Tools:</strong> Figma, Prototyping</li>
-                        <li><strong>Skills:</strong> MVP Development, Feature Prioritization</li>
-                    </ul>
+                    <div class="card-body">
+                        <h3>Design & Research</h3>
+                        <ul>
+                            <li><strong>UX Research:</strong> Double Diamond, Competitive Analysis</li>
+                            <li><strong>Design Tools:</strong> Figma, Prototyping</li>
+                            <li><strong>Skills:</strong> MVP Development, Feature Prioritization</li>
+                        </ul>
+                    </div>
                 </article>
             </div>
         </section>

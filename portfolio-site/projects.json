@@ -29,8 +29,8 @@
         "link": "https://www.figma.com/board/CtI9xEMqwBcEowoJqsYcjR/Menu-Kesehatan-draft-mvps?node-id=83-514"
     },
     {
-        "title": "Academic Development Projects",
-        "description": "Includes a web application with a Laravel backend and Bootstrap frontend, a Flutter mobile app with Firebase integration for authentication and real-time chat, and an interactive 3D environment and map for a game using Unity.",
+        "title": "Academic Software Development Projects",
+        "description": "A collection of academic projects including a web application with a Laravel backend and Bootstrap frontend, a Flutter mobile app with Firebase integration, and an interactive 3D environment for a game using Unity.",
         "tech": [
             "Laravel",
             "Bootstrap",
@@ -38,6 +38,19 @@
             "Firebase",
             "Unity 3D"
         ],
-        "link": null
+        "link": "https://www.behance.net/gallery/201881329/Portfolio-Software-Engineer"
+    },
+    {
+        "title": "Broadcasting & Multimedia Production",
+        "description": "Directed and managed live broadcasting for major campus events, coordinating multi-camera setups and leading production teams. Experience in videography, video editing, and sound engineering for various film projects.",
+        "tech": [
+            "Live Broadcasting",
+            "Videography",
+            "Video Editing",
+            "OBS",
+            "Multi-camera Setup",
+            "Team Leadership"
+        ],
+        "link": "https://www.behance.net/gallery/201489187/Videography-Broadcasting-Portfoli"
     }
 ]
