@@ -391,6 +391,32 @@
             flex-grow: 1;
             padding: var(--space-3);
             overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-2);
+        }
+
+        .message {
+            padding: var(--space-2) var(--space-3);
+            border-radius: var(--radius-md);
+            max-width: 80%;
+            word-wrap: break-word;
+            line-height: 1.4;
+        }
+
+        .message.user {
+            background-color: var(--primary);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: var(--radius-sm);
+        }
+
+        .message.bot {
+            background-color: var(--bg-off);
+            color: var(--text-primary);
+            align-self: flex-start;
+            border: 1px solid var(--border-color);
+            border-bottom-left-radius: var(--radius-sm);
         }
 
         #chatBox form {
