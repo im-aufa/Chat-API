@@ -245,7 +245,7 @@ async function sendMessage() {
   input.disabled = true;
 
   addMessage(query, true);
-  spinner.style.display = "inline-block";
+  if (spinner) spinner.style.display = "inline-block";
   showTypingIndicator();
 
   try {
@@ -285,7 +285,7 @@ async function sendMessage() {
     addMessage(`Error: ${friendly}. Please try again later.`, false);
     console.error("Fetch Error:", error);
   } finally {
-    spinner.style.display = "none";
+    if (spinner) spinner.style.display = "none";
     hideTypingIndicator();
     input.disabled = false;
     input.focus();

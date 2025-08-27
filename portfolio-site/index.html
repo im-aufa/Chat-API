@@ -368,8 +368,8 @@
             position: fixed;
             bottom: calc(var(--space-3) + 80px);
             right: var(--space-3);
-            width: 320px;
-            max-height: 520px;
+            width: 360px;
+            max-height: 580px;
             background-color: var(--bg-off);
             border-radius: var(--radius-md);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
@@ -393,37 +393,39 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: var(--space-2) var(--space-3);
+            padding-left: 10px;
+            padding-right: 10px;
             border-bottom: 1px solid var(--border-color);
             font-weight: 500;
+            font-size: 0.95rem;
         }
 
         #closeChat {
             background: none;
             border: none;
-            font-size: 1.2rem;
+            font-size: 1rem;
             cursor: pointer;
             color: var(--text-secondary);
         }
 
         #chatMessages {
             flex-grow: 1;
-            padding: var(--space-2);
+            padding: 8px 10px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: var(--space-3);
+            gap: 10px;
         }
 
         .message-wrapper {
             display: flex;
-            gap: var(--space-2);
+            gap: var(--space-1);
             max-width: 90%;
         }
 
         .avatar {
-            width: 40px;
-            height: 40px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             background-color: var(--border-color);
             flex-shrink: 0;
@@ -433,22 +435,23 @@
         .avatar svg {
             width: 100%;
             height: 100%;
-            padding: 8px;
+            padding: 4px;
             color: var(--text-secondary);
         }
 
         .message {
-            padding: var(--space-2) var(--space-3);
+            padding: 8px 10px;
             border-radius: var(--radius-md);
             word-wrap: break-word;
-            line-height: 1.5;
+            line-height: 1.45;
             position: relative;
+            font-size: 0.92rem;
         }
 
         .message .timestamp {
-            font-size: 0.75rem;
+            font-size: 0.68rem;
             color: var(--text-secondary);
-            margin-top: var(--space-1);
+            margin-top: 2px;
             text-align: right;
         }
 
@@ -517,26 +520,76 @@
 
         #chatBox form {
             display: flex;
-            padding: var(--space-1) var(--space-2);
+            padding: 8px 12px;
             border-top: 1px solid var(--border-color);
-            gap: var(--space-2);
+            gap: 8px;
+            align-items: center;
         }
 
         #chatInput {
             flex-grow: 1;
             border: 1px solid var(--border-color);
-            border-radius: var(--radius-sm);
-            padding: var(--space-2);
+            border-radius: 999px;
+            padding: 0 12px;
+            font-size: 0.9rem;
+            height: 38px;
+            line-height: 32px;
+            box-sizing: border-box;
         }
 
         #chatBox button[type="submit"] {
             background-color: var(--primary);
-            color: white;
             border: none;
-            padding: var(--space-2);
-            border-radius: var(--radius-sm);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
             cursor: pointer;
-            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            flex-shrink: 0;
+            transition: background-color 0.2s ease;
+        }
+
+        #chatBox button[type="submit"]:hover {
+            background-color: var(--primary-hover);
+        }
+
+        #chatBox button[type="submit"] svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Disabled states to avoid odd look */
+        #chatInput:disabled {
+            background: var(--bg-light);
+            color: var(--text-secondary);
+            opacity: 0.7;
+        }
+
+        #chatBox button[disabled] {
+            background-color: #9bb7ff;
+            cursor: not-allowed;
+            opacity: 0.8;
+        }
+
+        /* Small spinner */
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--border-color);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            display: none;
+            align-self: center;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         /* Responsive Design */
@@ -680,7 +733,12 @@
         <div id="chatMessages"></div>
         <form onsubmit="sendMessage(); return false;">
             <input type="text" id="chatInput" placeholder="Ask me anything..." autocomplete="off" required>
-            <button type="submit">Send</button>
+            <button type="submit" aria-label="Send">
+                <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2.5 17.5L17.5 10L2.5 2.5L2.5 8.5L13.5 10L2.5 11.5L2.5 17.5Z" fill="white" />
+                </svg>
+            </button>
+            <div id="chatSpinner" class="spinner"></div>
         </form>
     </div>
 
